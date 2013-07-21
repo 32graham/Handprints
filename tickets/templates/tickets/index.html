@@ -1,0 +1,20 @@
+{% extends "tickets/base.html" %}
+
+{% block content %}
+
+<h3>This is the tickets page</h3>
+
+<table border=1 cellpadding=8>
+    <tr>
+        <th>Title</th>
+        <th>Company</th>
+    </tr>
+    {% for ticket in tickets %}
+    <tr>
+        <td>{{ticket.title}}</td>
+        <td>{{ticket.company}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
