@@ -11,7 +11,7 @@
     </tr>
     {% for ticket in tickets %}
     <tr>
-        <td>{{ticket.title}}</td>
+        <td><a href="{% url "ticket" ticket.pk %}">{{ticket.title}}</a></td>
         <td>{{ticket.company}}</td>
     </tr>
     {% endfor %}
