@@ -2,8 +2,21 @@
 
 {% block content %}
 
-<h1>{{ticket.title}}</h1>
-<h2>{{ticket.company}}</h2>
-<h3>{{ticket.state}}</h3>
+<h1>Title : {{ticket.title}}</h1>
+<h3>ID : {{ticket.pk}}</h3>
+<h3>Company : {{ticket.company}}</h3>
+<h3>Status : {{ticket.state}}</h3>
+<hr/>
+
+{% for comment in ticket.ticketcomment_set.all %}
+
+<p>{{ comment.comment }}</p>
+
+{% endfor %}
+
+<form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
+    {{ comment_form.as_p }}
+    <input type="submit" value="Post Comment" />
+</form>
 
 {% endblock %}
