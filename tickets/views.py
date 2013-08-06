@@ -38,3 +38,13 @@ def ticket(request, ticket_id):
             'comment_form': form
         }
     )
+
+
+def tier(request, tier_id):
+    tickets = Ticket.objects.filter(tier_id=tier_id)
+
+    return render(
+        request,
+        'tickets/tier.html',
+        {'tickets': tickets}
+    )

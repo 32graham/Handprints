@@ -2,19 +2,17 @@
 
 {% block content %}
 
-<h3>This is the tickets page</h3>
+<h3>This is the tier page</h3>
 
 <table border=1 cellpadding=8>
     <tr>
         <th>Title</th>
         <th>Company</th>
-        <th>Tier</th>
     </tr>
     {% for ticket in tickets %}
     <tr>
         <td><a href="{% url "ticket" ticket.pk %}">{{ticket.title}}</a></td>
         <td>{{ticket.company}}</td>
-        <td><a href="{% url "tier" ticket.tier_id %}">{{ticket.tier}}</a></td>
     </tr>
     {% endfor %}
 </table>

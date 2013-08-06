@@ -15,10 +15,19 @@ class TicketState(models.Model):
         return self.name
 
 
+class Tier(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Ticket(models.Model):
     title = models.CharField(max_length=50)
     company = models.ForeignKey(Company)
     state = models.ForeignKey(TicketState)
+    tier = models.ForeignKey(Tier)
 
     def __unicode__(self):
         return self.title
