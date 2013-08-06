@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from datetime import datetime
-from .models import Ticket
+from .models import Ticket, Company
 from .forms import CommentForm
 
 
@@ -26,7 +26,7 @@ def ticket(request, ticket_id):
             comment.date_time = datetime.now()
             comment.save()
 
-            return HttpResponseRedirect('/tickets/')
+            return HttpResponseRedirect('/tickets/' + ticket_id + '/')
     else:
         form = CommentForm(initial={'ticket_id': ticket_id, 'date_time': datetime.now()})
 
@@ -47,4 +47,14 @@ def tier(request, tier_id):
         request,
         'tickets/tier.html',
         {'tickets': tickets}
+    )
+
+
+def company(request, company_id):
+    company = Company.objects.get(pk=company_id)
+
+    return render(
+        request,
+        'tickets/company.html',
+        {'company': company}
     )

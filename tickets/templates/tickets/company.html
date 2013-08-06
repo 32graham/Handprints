@@ -2,18 +2,18 @@
 
 {% block content %}
 
-<h3>This is the tickets page</h3>
+<h1>{{company.name}}</h1>
+
+<h2>Open Issues</h2>
 
 <table border=1 cellpadding=8>
     <tr>
         <th>Title</th>
-        <th>Company</th>
         <th>Tier</th>
     </tr>
-    {% for ticket in tickets %}
+    {% for ticket in company.ticket_set.all %}
     <tr>
         <td><a href="{% url "ticket" ticket.pk %}">{{ticket.title}}</a></td>
-        <td><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></td>
         <td><a href="{% url "tier" ticket.tier_id %}">{{ticket.tier}}</a></td>
     </tr>
     {% endfor %}
