@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from datetime import datetime
 from .models import Ticket, Company
-from .forms import CommentForm
+from .forms import TicketForm, CommentForm
 
 
 def index(request):
@@ -15,27 +15,42 @@ def index(request):
     )
 
 
-def ticket(request, ticket_id):
+def comment(request, ticket_id):
     ticket = Ticket.objects.get(pk=ticket_id)
 
     if request.method == 'POST':
         form = CommentForm(request.POST, {})
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.ticket_id = ticket_id
             comment.date_time = datetime.now()
+            comment.ticket = ticket
             comment.save()
 
+    return index(request)
+
+
+def ticket(request, ticket_id):
+    ticket = Ticket.objects.get(pk=ticket_id)
+
+    if request.method == 'POST':
+        ticketForm = TicketForm(request.POST, {})
+        if ticketForm.is_valid():
+            formTicket = ticketForm.save(commit=False)
+            ticket.tier = formTicket.tier
+            ticket.save()
             return HttpResponseRedirect('/tickets/' + ticket_id + '/')
     else:
-        form = CommentForm(initial={'ticket_id': ticket_id, 'date_time': datetime.now()})
+        ticketForm = TicketForm(instance=ticket)
+
+    commentForm = CommentForm()
 
     return render(
         request,
         'tickets/ticket.html',
         {
             'ticket': ticket,
-            'comment_form': form
+            'ticket_form': ticketForm,
+            'comment_form': commentForm
         }
     )
 

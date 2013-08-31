@@ -12,7 +12,7 @@
     {% for ticket in tickets %}
     <tr>
         <td><a href="{% url "ticket" ticket.pk %}">{{ticket.title}}</a></td>
-        <td>{{ticket.company}}</td>
+        <td><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></td>
     </tr>
     {% endfor %}
 </table>

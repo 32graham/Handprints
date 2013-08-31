@@ -32,11 +32,10 @@ class Ticket(models.Model):
     def __unicode__(self):
         return self.title
 
-
 class TicketComment(models.Model):
     ticket = models.ForeignKey(Ticket)
+    comment = models.TextField(max_length=1000)
     date_time = models.DateTimeField()
-    comment = models.TextField()
 
     def __unicode__(self):
         return self.comment

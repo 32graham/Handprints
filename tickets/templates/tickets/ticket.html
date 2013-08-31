@@ -5,19 +5,24 @@
 <h1>Title : {{ticket.title}}</h1>
 <h3>ID : {{ticket.pk}}</h3>
 <h3><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></h3>
-<h3><a href="{% url "tier" ticket.tier_id %}">{{ticket.tier}}</a></h3>
 <h3>Status : {{ticket.state}}</h3>
+<form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
+    {{ ticket_form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+
 <hr/>
 
 {% for comment in ticket.ticketcomment_set.all %}
 
-<p>{{ comment.comment }}</p>
+    <p>{{comment}}</p>
 
-{% endfor %}
+{% endfor%}
 
-<form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
+<form action="{% url "comment" ticket.pk %}" method="post">{% csrf_token %}
     {{ comment_form.as_p }}
-    <input type="submit" value="Post Comment" />
+    <input type="submit" value="Post" />
 </form>
+
 
 {% endblock %}
