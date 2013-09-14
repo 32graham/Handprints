@@ -9,8 +9,14 @@ class CommentForm(forms.ModelForm):
         fields = ['comment']
 
 
-class TicketForm(forms.ModelForm):
+class EditTicketForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
         fields = ['tier']
+
+class NewTicketForm(forms.ModelForm):
+
+    class Meta:
+        model = Ticket
+        fields = ['title','company','state','tier']

@@ -2,27 +2,45 @@
 
 {% block content %}
 
-<h1>Title : {{ticket.title}}</h1>
-<h3>ID : {{ticket.pk}}</h3>
-<h3><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></h3>
-<h3>Status : {{ticket.state}}</h3>
-<form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
-    {{ ticket_form.as_p }}
-    <input type="submit" value="Save" />
-</form>
+{% load crispy_forms_tags %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>{{ticket.title}}</h1>
+        <h3><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <h3>Ticket ID : {{ticket.pk}}</h3>
+    </div>
+    <div class="col-sm-4">
+        <h3>Status : {{ticket.state}}</h3>
+    </div>
+    <div class="col-sm-4">
+        <form class="form-inline" action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
+            {{ ticket_form|crispy }}
+            <input type="submit" class="btn btn-default" value="Save" />
+        </form>
+    </div>
+</div>
 
 <hr/>
 
+<h3>Comments</h3>
+
 {% for comment in ticket.ticketcomment_set.all %}
-
-    <p>{{comment}}</p>
-
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <p>{{comment}}</p>
+        </div>
+    </div>
 {% endfor%}
 
 <form action="{% url "comment" ticket.pk %}" method="post">{% csrf_token %}
-    {{ comment_form.as_p }}
-    <input type="submit" value="Post" />
+    {{ comment_form|crispy }}
+    <input type="submit" class="btn btn-primary" value="Post" />
 </form>
-
 
 {% endblock %}

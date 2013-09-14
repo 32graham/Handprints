@@ -8,4 +8,5 @@ urlpatterns = patterns(
     url(r'^(?P<ticket_id>\d+)/postcomment/$', views.comment, name='comment'),
     url(r'^tier/(?P<tier_id>\d+)/$', views.tier, name='tier'),
     url(r'^company/(?P<company_id>\d+)/$', views.company, name='company'),
+    url(r'^newticket/$', views.new_ticket, name='new_ticket'),
 )
