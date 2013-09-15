@@ -10,7 +10,7 @@
 
 <body>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="sr-only">Toggle navigation</span>
@@ -37,11 +37,12 @@
             <li><a href="{% url "tier" 4 %}">Tier 4</a></li>
           </ul>
         </li>
+        <li><a href="{% url "django.contrib.auth.views.logout" %}"><i class="icon-fixed-width icon-signout"></i>Logout</a>
       </ul>
     </div>
   </nav>
 
-  <div style="padding:70px 30px 3px 30px">
+  <div style="padding:0px 30px">
 
   {% block content %} {% endblock %}
 

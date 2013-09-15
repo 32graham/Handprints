@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -25,6 +26,7 @@ class Tier(models.Model):
 
 class Ticket(models.Model):
     title = models.CharField(max_length=50)
+    description = models.TextField()
     company = models.ForeignKey(Company)
     state = models.ForeignKey(TicketState)
     tier = models.ForeignKey(Tier)
@@ -33,8 +35,9 @@ class Ticket(models.Model):
         return self.title
 
 class TicketComment(models.Model):
+    user = models.ForeignKey(User)
     ticket = models.ForeignKey(Ticket)
-    comment = models.TextField(max_length=1000)
+    comment = models.TextField()
     date_time = models.DateTimeField()
 
     def __unicode__(self):

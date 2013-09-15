@@ -1,20 +1,30 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from .models import Ticket, Company, Tier
 from .forms import EditTicketForm, CommentForm, NewTicketForm
 
 
 def index(request):
+    return render(
+        request,
+        'tickets/index.html',
+        {}
+    )
+
+
+@login_required
+def open(request):
     tickets = Ticket.objects.all()
 
     return render(
         request,
-        'tickets/index.html',
+        'tickets/open.html',
         {'tickets': tickets}
     )
 
-
+@login_required
 def comment(request, ticket_id):
     ticket_model = Ticket.objects.get(pk=ticket_id)
 
@@ -24,11 +34,13 @@ def comment(request, ticket_id):
             comment = form.save(commit=False)
             comment.date_time = datetime.now()
             comment.ticket = ticket_model
+            comment.user = request.user
             comment.save()
 
     return redirect('ticket', ticket_id=1)
 
 
+@login_required
 def ticket(request, ticket_id):
     ticket = Ticket.objects.get(pk=ticket_id)
 
@@ -55,6 +67,7 @@ def ticket(request, ticket_id):
     )
 
 
+@login_required
 def tier(request, tier_id):
     tickets = Ticket.objects.filter(tier_id=tier_id)
     tier = Tier.objects.get(pk=tier_id)
@@ -69,6 +82,7 @@ def tier(request, tier_id):
     )
 
 
+@login_required
 def company(request, company_id):
     company = Company.objects.get(pk=company_id)
 
@@ -78,6 +92,8 @@ def company(request, company_id):
         {'company': company}
     )
 
+
+@login_required
 def new_ticket(request):
     if request.method == 'POST':
         form = NewTicketForm(request.POST, {})
