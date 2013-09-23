@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class Company(models.Model):
@@ -9,7 +10,14 @@ class Company(models.Model):
         return self.name
 
 
-class TicketState(models.Model):
+class Status(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Department(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
@@ -18,7 +26,7 @@ class TicketState(models.Model):
 
 class Tier(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
+    department = models.ForeignKey(Department)
 
     def __unicode__(self):
         return self.name
@@ -28,17 +36,23 @@ class Ticket(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     company = models.ForeignKey(Company)
-    state = models.ForeignKey(TicketState)
+    is_blocker = models.BooleanField(verbose_name=u'blocker')
     tier = models.ForeignKey(Tier)
+    status = models.ForeignKey(Status)
+    assignee = models.ForeignKey(User, related_name='assignments')
+    changed_by = models.ForeignKey(User, related_name='ticket_changes')
+    history = HistoricalRecords()
 
     def __unicode__(self):
         return self.title
 
+
 class TicketComment(models.Model):
-    user = models.ForeignKey(User)
     ticket = models.ForeignKey(Ticket)
     comment = models.TextField()
     date_time = models.DateTimeField()
+    user = models.ForeignKey(User)
+    is_public = models.BooleanField()
 
     def __unicode__(self):
         return self.comment

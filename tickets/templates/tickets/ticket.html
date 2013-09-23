@@ -12,36 +12,88 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-2">
-        <h3>Ticket ID</h3>
-        <h3>Status</h3>
+    <div class="col-sm-3">
+        <table class="table">
+            <tr>
+                <td>TicketID</td>
+                <td>{{ticket.pk}}</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>{{ticket.status}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <p class="lead">{{ticket.description}}</p>
+    </div>
+    <div class="col-sm-3">
         <form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
             {{ ticket_form|crispy }}
             <input type="submit" class="btn btn-warning" value="Save" />
         </form>
-    </div>
-    <div class="col-sm-2">
-        <h3>{{ticket.pk}}</h3>
-        <h3>{{ticket.state}}</h3>
-    </div>
-    <div class="col-sm-8">
-        <p class="lead">{{ticket.description}}</p>
+
     </div>
 </div>
 
 <hr/>
 
-<h3>Comments</h3>
+{% for event in events %}
 
-{% for comment in ticket.ticketcomment_set.all %}
+  {% if event.comment %}
+
     <div class="panel panel-info">
         <div class="panel-heading">
-            {{comment.user}}
+            <div class="row">
+                <div class="col-sm-6">
+                    {{event.user.get_full_name}}
+                </div>
+                <div class="col-sm-6 text-right text-muted">
+                    {{event.date_time}}
+                </div>
+            </div>
         </div>
         <div class="panel-body">
-            {{comment}}
+            <div class="row">
+                <div class="col-xs-0 col-sm-1">
+                    <i class="icon-comment icon-4x hidden-xs"></i>
+                </div>
+                <div class="col-xs-12 col-sm-11">
+                    {{event}}
+                </div>
+            </div>
         </div>
     </div>
+
+  {% else %}
+
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{event.changed_by}}
+                </div>
+                <div class="col-sm-6 text-right text-muted">
+                    {{event.date_time}}
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <i class="icon-chevron-sign-right icon-4x hidden-xs"></i>
+                </div>
+                <div class="col-sm-11">
+                    <p>{{event.field_name}} changed from {{event.old_value}} to {{event.new_value}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  {% endif %}
+
 {% endfor%}
 
 <form action="{% url "comment" ticket.pk %}" method="post">{% csrf_token %}

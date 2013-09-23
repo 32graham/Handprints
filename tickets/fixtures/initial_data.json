@@ -1,0 +1,96 @@
+[
+  {
+    "model": "tickets.company",
+    "pk": 1,
+    "fields": {
+      "name": "Summit"
+    }
+  },
+  {
+    "model": "tickets.company",
+    "pk": 2,
+    "fields": {
+      "name": "ECCV"
+    }
+  },
+  {
+    "model": "tickets.status",
+    "pk": 1,
+    "fields": {
+      "name": "Open"
+    }
+  },
+  {
+    "model": "tickets.status",
+    "pk": 2,
+    "fields": {
+      "name": "Closed"
+    }
+  },
+  {
+    "model": "tickets.department",
+    "pk": 1,
+    "fields": {
+      "name": "Tech Support"
+    }
+  },
+  {
+    "model": "tickets.department",
+    "pk": 2,
+    "fields": {
+      "name": "Implementation"
+    }
+  },
+  {
+    "model": "tickets.department",
+    "pk": 3,
+    "fields": {
+      "name": "Development"
+    }
+  },
+  {
+    "model": "tickets.tier",
+    "pk": 1,
+    "fields": {
+      "name": "Tier 1",
+      "department": 1
+    }
+  },
+  {
+    "model": "tickets.tier",
+    "pk": 2,
+    "fields": {
+      "name": "Tier 2",
+      "department": 1
+    }
+  },
+  {
+    "model": "tickets.tier",
+    "pk": 3,
+    "fields": {
+      "name": "Tier 3",
+      "department": 3
+    }
+  },
+  {
+    "model": "tickets.tier",
+    "pk": 4,
+    "fields": {
+      "name": "Tier 4",
+      "department": 3
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "first_name": "Josh",
+      "last_name": "Graham",
+      "username": "jgraham",
+      "password": "pbkdf2_sha256$10000$5DF6ZvoGtrSG$/usqVxMrk4tYQqLNxdfsg29P3dOzb0jkmwHVO0Q3nvs=",
+      "is_staff": true,
+      "is_superuser": true,
+      "email": "jgraham@cusi.com"
+    }
+  }
+]
