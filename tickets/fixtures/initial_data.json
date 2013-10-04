@@ -92,5 +92,91 @@
       "is_superuser": true,
       "email": "jgraham@cusi.com"
     }
+  },
+  {
+    "model": "tickets.ticket",
+    "pk": 1,
+    "fields": {
+      "title": "Ebill Issue",
+      "description": "Their ebills will not send",
+      "company": 1,
+      "is_blocker": false,
+      "tier": 1,
+      "status": 1,
+      "assignee": 1,
+      "changed_by": 1
+    }
+  },
+  {
+    "model": "tickets.ticket",
+    "pk": 2,
+    "fields": {
+      "title": "UMS is very slow",
+      "description": "Right now their server is running slow",
+      "company": 2,
+      "is_blocker": true,
+      "tier": 3,
+      "status": 1,
+      "assignee": 1,
+      "changed_by": 1
+    }
+  },
+  {
+    "model": "tickets.ticket",
+    "pk": 3,
+    "fields": {
+      "title": "Statement wont work after update",
+      "description": "After the update their statement wont work",
+      "company": 1,
+      "is_blocker": false,
+      "tier": 2,
+      "status": 1,
+      "assignee": 1,
+      "changed_by": 1
+    }
+  },
+  {
+    "model": "tickets.ticketcomment",
+    "pk": 1,
+    "fields": {
+      "ticket": 1,
+      "comment": "Have you tried turning it off and on again?",
+      "date_time": "2013-09-15T14:00:00-05:00",
+      "user": 1,
+      "is_public": false
+    }
+  },
+  {
+    "model": "tickets.ticketcomment",
+    "pk": 2,
+    "fields": {
+      "ticket": 1,
+      "comment": "Yes, it did not help",
+      "date_time": "2013-09-15T15:00:00-05:00",
+      "user": 1,
+      "is_public": false
+    }
+  },
+  {
+    "model": "tickets.ticketcomment",
+    "pk": 3,
+    "fields": {
+      "ticket": 1,
+      "comment": "Try changing setting x to y",
+      "date_time": "2013-09-15T16:00:00-05:00",
+      "user": 1,
+      "is_public": false
+    }
+  },
+  {
+    "model": "tickets.ticketcomment",
+    "pk": 4,
+    "fields": {
+      "ticket": 1,
+      "comment": "That worked",
+      "date_time": "2013-09-15T17:00:00-05:00",
+      "user": 1,
+      "is_public": false
+    }
   }
 ]

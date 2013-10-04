@@ -1,0 +1,33 @@
+{% extends "tickets/base.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>
+            <i class="icon-user icon-1x text-muted"></i>
+            {{user.get_full_name}}
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h1>Assigned Issues</h1>
+
+        <ul>
+
+        {% for ticket in user.assignments.all %}
+
+        <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
+
+        {% endfor %}
+
+        </ul>
+
+    </div>
+    <div class="col-md-6">
+        <h1>Stats</h1>
+    </div>
+</div>
+{% endblock %}

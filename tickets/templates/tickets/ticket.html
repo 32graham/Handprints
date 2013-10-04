@@ -58,9 +58,17 @@
                 <div class="col-xs-0 col-sm-1">
                     <i class="icon-comment icon-4x hidden-xs"></i>
                 </div>
-                <div class="col-xs-12 col-sm-11">
+                <div class="col-sm-8">
                     {{event}}
                 </div>
+                {% if event.attachment %}
+                <div class="col-xs-0 col-sm-1">
+                    <i class="icon-file icon-4x hidden-xs pull-right"></i>
+                </div>
+                <div class="col-sm-2">
+                    <a href="{{ event.attachment.url }}">{{event.attachment.name}}</a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -96,9 +104,16 @@
 
 {% endfor%}
 
-<form action="{% url "comment" ticket.pk %}" method="post">{% csrf_token %}
-    {{ comment_form|crispy }}
-    <input type="submit" class="btn btn-primary" value="Post" />
-</form>
+<div class="row">
+    <div class="col-md-12">
+        <form action="{% url "comment" ticket.pk %}"
+            method="post"
+            enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ comment_form|crispy }}
+            <input type="submit" class="btn btn-primary" value="Post" />
+        </form>
+  </div>
+</div>
 
 {% endblock %}

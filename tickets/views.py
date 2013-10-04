@@ -40,7 +40,7 @@ def comment(request, ticket_id):
     ticket_model = Ticket.objects.get(pk=ticket_id)
 
     if request.method == 'POST':
-        form = CommentForm(request.POST, {})
+        form = CommentForm(request.POST, request.FILES)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.date_time = datetime.now()
@@ -96,7 +96,7 @@ def ticket(request, ticket_id):
             'ticket': ticket,
             'ticket_form': ticketForm,
             'comment_form': commentForm,
-            'events': events
+            'events': events,
         }
     )
 
@@ -111,7 +111,7 @@ def tier(request, tier_id):
         'tickets/tier.html',
         {
             'tickets': tickets,
-            'tier': tier
+            'tier': tier,
         }
     )
 

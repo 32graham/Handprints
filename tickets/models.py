@@ -5,6 +5,7 @@ from simple_history.models import HistoricalRecords
 
 class Company(models.Model):
     name = models.CharField(max_length=50)
+    notes = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.name
@@ -53,6 +54,7 @@ class TicketComment(models.Model):
     date_time = models.DateTimeField()
     user = models.ForeignKey(User)
     is_public = models.BooleanField()
+    attachment = models.FileField(upload_to='attachment', null=True, blank=True)
 
     def __unicode__(self):
         return self.comment
