@@ -25,13 +25,17 @@ def index(request):
 
 
 @login_required
-def open(request):
-    tickets = Ticket.objects.filter(status__name="Open")
+def status(request, status_id):
+    status = Status.objects.get(pk=status_id)
+    tickets = Ticket.objects.filter(status__pk=status_id)
 
     return render(
         request,
-        'tickets/open.html',
-        {'tickets': tickets}
+        'tickets/status.html',
+        {
+            'tickets': tickets,
+            'status': status,
+        }
     )
 
 
@@ -72,6 +76,12 @@ def ticket(request, ticket_id):
                 old_status = Status.objects.get(pk=previous_change.status_id)
                 changed_by = User.objects.get(pk=change.changed_by_id)
                 events.append(TicketChange('Status', old_status.name, new_status.name, change.history_date, changed_by.get_full_name()))
+
+            if change.assignee_id != previous_change.assignee_id:
+                new_assignee = User.objects.get(pk=change.assignee_id)
+                old_assignee = User.objects.get(pk=previous_change.assignee_id)
+                changed_by = User.objects.get(pk=change.changed_by_id)
+                events.append(TicketChange('Assignee', old_assignee.get_full_name(), new_assignee.get_full_name(), change.history_date, changed_by.get_full_name()))
 
         previous_change = change
 
