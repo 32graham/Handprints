@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td>Status</td>
-                <td>{{ticket.status}}</td>
+                <td><a href="{% url "status" ticket.status.pk %}">{{ticket.status}}</a></td>
             </tr>
         </table>
     </div>

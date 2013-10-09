@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'crispy_forms',
     'simple_history',
+    'haystack',
     'tickets',
     'profiles',
 )
@@ -158,4 +159,11 @@ LOGGING = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-LOGIN_REDIRECT_URL = '/tickets/open/'
+LOGIN_REDIRECT_URL = '/tickets/status/1/'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': '/home/josh/dev/search/whoosh_index',
+    }
+}

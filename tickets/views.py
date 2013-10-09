@@ -145,7 +145,7 @@ def new_ticket(request):
             ticket = form.save(commit=False)
             ticket.changed_by = request.user
             ticket.save()
-            return HttpResponseRedirect('/tickets/')
+            return HttpResponseRedirect('/tickets/status/1/')
     else:
         form = NewTicketForm()
 
