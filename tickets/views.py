@@ -19,7 +19,7 @@ class TicketChange:
 def index(request):
     return render(
         request,
-        'tickets/index.html',
+        'index.html',
         {}
     )
 

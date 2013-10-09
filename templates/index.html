@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1><i class="icon-fixed-width icon-ticket icon-large"></i>Handprints</h1>
+        <p class="lead">Simple Awesome Ticket Management</p>
+        <p>
+          <a href="{% url "auth_login" %}" class="btn btn-primary btn-lg">
+            <i class="icon-fixed-width icon-signin"></i>
+            Login
+          </a>
+        </p>
+    </div>
+</div>
+
+<div class="container marketing">
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h2 class="featurette-heading">Fast. <span class="text-muted">Spend your time resolving tickets rather than waiting.</span></h2>
+      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    </div>
+    <div class="col-md-5">
+      <h1 class="text-center"><i class="icon-fixed-width icon-rocket icon-4x"></i></h1>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-5">
+      <h1 class="text-center"><i class="icon-fixed-width icon-comments-alt icon-4x"></i></h1>
+    </div>
+    <div class="col-md-7">
+      <h2 class="featurette-heading">Chronological Communication. <span class="text-muted">Read comments in the order they happended.</span></h2>
+      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="container marketing">
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h2 class="featurette-heading">Reporting. <span class="text-muted">Understand your data with powerful reporting.</span></h2>
+      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    </div>
+    <div class="col-md-5">
+      <h1 class="text-center"><i class="icon-fixed-width icon-bar-chart icon-4x"></i></h1>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

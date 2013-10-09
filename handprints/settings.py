@@ -90,7 +90,7 @@ SECRET_KEY = 'yrh)@_@tyj!58i5p%u(b3d@tn)3ii-&y*ua-0!mjb2hp&=ahv&'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -109,9 +109,7 @@ ROOT_URLCONF = 'handprints.urls'
 WSGI_APPLICATION = 'handprints.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    '/home/josh/dev/handprints/templates/',
 )
 
 INSTALLED_APPS = (
