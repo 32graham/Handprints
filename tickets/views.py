@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -26,7 +26,7 @@ def index(request):
 
 @login_required
 def status(request, status_id):
-    status = Status.objects.get(pk=status_id)
+    status = get_object_or_404(Status, pk=status_id)
     tickets = Ticket.objects.filter(status__pk=status_id)
 
     return render(
@@ -41,7 +41,7 @@ def status(request, status_id):
 
 @login_required
 def comment(request, ticket_id):
-    ticket_model = Ticket.objects.get(pk=ticket_id)
+    ticket_model = get_object_or_404(Ticket, pk=ticket_id)
 
     if request.method == 'POST':
         form = CommentForm(request.POST, request.FILES)
@@ -57,7 +57,7 @@ def comment(request, ticket_id):
 
 @login_required
 def ticket(request, ticket_id):
-    ticket = Ticket.objects.get(pk=ticket_id)
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
     events = list(ticket.ticketcomment_set.all())
 
     all_changes = ticket.history.order_by('history_date')
@@ -114,7 +114,7 @@ def ticket(request, ticket_id):
 @login_required
 def tier(request, tier_id):
     tickets = Ticket.objects.filter(tier_id=tier_id)
-    tier = Tier.objects.get(pk=tier_id)
+    tier = get_object_or_404(Tier, pk=tier_id)
 
     return render(
         request,
@@ -128,7 +128,7 @@ def tier(request, tier_id):
 
 @login_required
 def company(request, company_id):
-    company = Company.objects.get(pk=company_id)
+    company = get_object_or_404(Company, pk=company_id)
 
     return render(
         request,
