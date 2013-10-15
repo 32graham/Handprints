@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import datetime
-from .models import Ticket, Company, Tier, Status
+from .models import Ticket, Company, Tier, Status, Department, TicketComment
 from .forms import EditTicketForm, CommentForm, NewTicketForm
+from loremipsum import get_sentences
+from django.utils.timezone import utc
 
 
 class TicketChange:
@@ -17,6 +20,42 @@ class TicketChange:
 
 
 def index(request):
+
+    # company = Company.objects.create(name='company', notes='notes')
+    # department = Department.objects.create(name='department')
+    # tier1 = Tier.objects.create(name='tier1', department=department)
+    # tier2 = Tier.objects.create(name='tier2', department=department)
+    # status1 = Status.objects.create(name='status1')
+    # status2 = Status.objects.create(name='status2')
+    #user1 = User.objects.create_user(username='username1', password='password1')
+    #user2 = User.objects.create_user(username='username2', password='password2')
+
+    # user = User.objects.get(pk=1)
+    # company = Company.objects.get(pk=1)
+    # status = Status.objects.get(pk=1)
+    # tier = Tier.objects.get(pk=1)
+
+    # for i in range(0,1000):
+    #     ticket = Ticket.objects.create(
+    #         title=' '.join(get_sentences(1)),
+    #         description=' '.join(get_sentences(5)),
+    #         company=company,
+    #         is_blocker=False,
+    #         tier=tier,
+    #         status=status,
+    #         assignee=user,
+    #         changed_by=user,
+    #     )
+
+    #     for j in range(0,10):
+    #         TicketComment.objects.create(
+    #             user=user,
+    #             ticket=ticket,
+    #             comment=' '.join(get_sentences(2)),
+    #             date_time=datetime.utcnow().replace(tzinfo=utc),
+    #             is_public=True,
+    #         )
+
     return render(
         request,
         'index.html',
@@ -27,7 +66,17 @@ def index(request):
 @login_required
 def status(request, status_id):
     status = get_object_or_404(Status, pk=status_id)
-    tickets = Ticket.objects.filter(status__pk=status_id)
+    ticket_list = Ticket.objects.filter(status__pk=status_id)
+
+    paginator = Paginator(ticket_list, 20)
+    page = request.GET.get('page')
+
+    try:
+        tickets = paginator.page(page)
+    except PageNotAnInteger:
+        tickets = paginator.page(1)
+    except EmptyPage:
+        tickets = paginator.page(paginator.num_pages)
 
     return render(
         request,
@@ -113,8 +162,18 @@ def ticket(request, ticket_id):
 
 @login_required
 def tier(request, tier_id):
-    tickets = Ticket.objects.filter(tier_id=tier_id)
+    ticket_list = Ticket.objects.filter(tier_id=tier_id)
     tier = get_object_or_404(Tier, pk=tier_id)
+
+    paginator = Paginator(ticket_list, 20)
+    page = request.GET.get('page')
+
+    try:
+        tickets = paginator.page(page)
+    except PageNotAnInteger:
+        tickets = paginator.page(1)
+    except EmptyPage:
+        tickets = paginator.page(paginator.num_pages)
 
     return render(
         request,
@@ -129,11 +188,25 @@ def tier(request, tier_id):
 @login_required
 def company(request, company_id):
     company = get_object_or_404(Company, pk=company_id)
+    ticket_list = company.ticket_set.all()
+
+    paginator = Paginator(ticket_list, 20)
+    page = request.GET.get('page')
+
+    try:
+        tickets = paginator.page(page)
+    except PageNotAnInteger:
+        tickets = paginator.page(1)
+    except EmptyPage:
+        tickets = paginator.page(paginator.num_pages)
 
     return render(
         request,
         'tickets/company.html',
-        {'company': company}
+        {
+            'company': company,
+            'tickets': tickets,
+        }
     )
 
 

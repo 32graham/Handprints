@@ -19,4 +19,19 @@
         {% endfor %}
     </table>
 
+    <ul class="pager">
+        {% if tickets.has_previous %}
+            <li><a href="?page={{ tickets.previous_page_number }}"><i class="icon-arrow-left"></i> Previous</a></li>
+        {% endif %}
+
+        <li class="text-muted" style="margin:30px;">
+            Page {{ tickets.number }} of {{ tickets.paginator.num_pages }}
+        </li>
+
+        {% if tickets.has_next %}
+            <li><a href="?page={{ tickets.next_page_number }}">Next <i class="icon-arrow-right"></i></a></li>
+        {% endif %}
+    </ul>
+
+
 {% endblock %}
