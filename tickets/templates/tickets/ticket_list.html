@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>All {{ status.name }} Tickets</h2>
+<h2>Tickets</h2>
 
     <table class="table table-striped">
         <tr>
@@ -20,16 +20,16 @@
     </table>
 
     <ul class="pager">
-        {% if tickets.has_previous %}
-            <li><a href="?page={{ tickets.previous_page_number }}"><i class="icon-arrow-left"></i> Previous</a></li>
+        {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}"><i class="icon-arrow-left "></i> Previous</a></li>
         {% endif %}
 
         <li class="text-muted" style="margin:30px;">
-            Page {{ tickets.number }} of {{ tickets.paginator.num_pages }}
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
         </li>
 
-        {% if tickets.has_next %}
-            <li><a href="?page={{ tickets.next_page_number }}">Next <i class="icon-arrow-right"></i></a></li>
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">Next <i class="icon-arrow-right"></i></a></li>
         {% endif %}
     </ul>
 
