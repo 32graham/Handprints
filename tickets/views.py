@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.views.generic import ListView
 from datetime import datetime
@@ -31,6 +32,11 @@ class TicketList(ListView):
         if 'company_id' in self.kwargs:
             queryset = queryset.filter(company__pk=self.kwargs['company_id'])
         return queryset
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TicketList, self).dispatch(*args, **kwargs)
+
 
 @login_required
 def comment(request, ticket_id):

@@ -1,12 +1,8 @@
-from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.views.generic import DetailView
 
 
-def profile(request, user_id):
-    user = User.objects.get(pk=user_id)
-
-    return render(
-        request,
-        'profiles/profile.html',
-        {'user': user}
-    )
+class ProfileDetailView(DetailView):
+    model = User
+    context_object_name = 'user'
+    template_name = 'profiles/user_detail.html'
