@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 from datetime import datetime
 from .models import Ticket, Tier, Status
 from .forms import EditTicketForm, CommentForm, NewTicketForm
@@ -17,6 +17,9 @@ class TicketChange:
         self.date_time = date_time
         self.changed_by = changed_by
 
+
+class IndexView(TemplateView):
+    template_name = 'index.html'
 
 class TicketList(ListView):
     model = Ticket
@@ -107,22 +110,6 @@ def ticket(request, ticket_id):
             'events': events,
         }
     )
-
-
-# @login_required
-# def comment(request, ticket_id):
-#     ticket_model = get_object_or_404(Ticket, pk=ticket_id)
-
-#     if request.method == 'POST':
-#         form = CommentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             comment = form.save(commit=False)
-#             comment.date_time = datetime.now()
-#             comment.ticket = ticket_model
-#             comment.user = request.user
-#             comment.save()
-
-#     return redirect('ticket', ticket_id=ticket_id)
 
 
 @login_required
