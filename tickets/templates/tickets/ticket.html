@@ -30,7 +30,7 @@
     <div class="col-sm-3">
         <form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
             {{ ticket_form|crispy }}
-            <input type="submit" class="btn btn-warning" value="Save" />
+            <input type="submit" class="btn btn-warning" value="Save" name="ticket_post"/>
         </form>
 
     </div>
@@ -106,12 +106,12 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form action="{% url "comment" ticket.pk %}"
+        <form action="{% url "ticket" ticket.pk %}"
             method="post"
             enctype="multipart/form-data">
             {% csrf_token %}
             {{ comment_form|crispy }}
-            <input type="submit" class="btn btn-primary" value="Post" />
+            <input type="submit" class="btn btn-primary" value="Post" name="comment_post" />
         </form>
   </div>
 </div>

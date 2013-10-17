@@ -112,6 +112,7 @@ class TicketsViewsTestCase(TestCase):
                 'tier': 1,
                 'status': 1,
                 'assignee': 1,
+                'ticket_post': '',
             }
         )
         self.assertEqual(resp.status_code, 302)
@@ -119,9 +120,10 @@ class TicketsViewsTestCase(TestCase):
 
     def test_comment_good(self):
         self.client.login(username='username', password='password')
-        resp = self.client.post(reverse('comment', args=[1]), {
+        resp = self.client.post(reverse('ticket', args=[1]), {
                 'comment': 'new comment',
                 'attachment': '',
+                'comment_post': '',
             }
         )
         self.assertEqual(resp.status_code, 302)

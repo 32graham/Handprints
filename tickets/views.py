@@ -38,25 +38,7 @@ class TicketList(ListView):
         return super(TicketList, self).dispatch(*args, **kwargs)
 
 
-@login_required
-def comment(request, ticket_id):
-    ticket_model = get_object_or_404(Ticket, pk=ticket_id)
-
-    if request.method == 'POST':
-        form = CommentForm(request.POST, request.FILES)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.date_time = datetime.now()
-            comment.ticket = ticket_model
-            comment.user = request.user
-            comment.save()
-
-    return redirect('ticket', ticket_id=ticket_id)
-
-
-@login_required
-def ticket(request, ticket_id):
-    ticket = get_object_or_404(Ticket, pk=ticket_id)
+def get_events(ticket):
     events = list(ticket.ticketcomment_set.all())
 
     all_changes = ticket.history.order_by('history_date')
@@ -85,18 +67,35 @@ def ticket(request, ticket_id):
         previous_change = change
 
     events = sorted(events, key=lambda event: event.date_time)
+    return events
 
-    if request.method == 'POST':
+
+@login_required
+def ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
+    events = get_events(ticket)
+
+    if request.method == 'POST' and 'ticket_post' in request.POST:
         ticketForm = EditTicketForm(request.POST, instance=ticket)
+        commentForm = CommentForm()
         if ticketForm.is_valid():
             model = ticketForm.save(commit=False)
             model.changed_by = request.user
             model.save()
             return HttpResponseRedirect('/tickets/' + ticket_id + '/')
+    elif request.method == 'POST' and 'comment_post' in request.POST:
+        commentForm = CommentForm(request.POST)
+        ticketForm = EditTicketForm(instance=ticket)
+        if commentForm.is_valid():
+            comment = commentForm.save(commit=False)
+            comment.date_time = datetime.now()
+            comment.ticket = ticket
+            comment.user = request.user
+            comment.save()
+            return HttpResponseRedirect('/tickets/' + ticket_id + '/')
     else:
         ticketForm = EditTicketForm(instance=ticket)
-
-    commentForm = CommentForm()
+        commentForm = CommentForm()
 
     return render(
         request,
@@ -108,6 +107,22 @@ def ticket(request, ticket_id):
             'events': events,
         }
     )
+
+
+# @login_required
+# def comment(request, ticket_id):
+#     ticket_model = get_object_or_404(Ticket, pk=ticket_id)
+
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.date_time = datetime.now()
+#             comment.ticket = ticket_model
+#             comment.user = request.user
+#             comment.save()
+
+#     return redirect('ticket', ticket_id=ticket_id)
 
 
 @login_required
