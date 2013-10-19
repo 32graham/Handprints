@@ -27,7 +27,7 @@ class TicketsViewsTestCase(TestCase):
             assignee=user,
             changed_by=user,
         )
-        comment = TicketComment.objects.create(
+        TicketComment.objects.create(
             ticket=ticket,
             comment='comment',
             date_time=datetime.utcnow().replace(tzinfo=utc),
@@ -42,7 +42,6 @@ class TicketsViewsTestCase(TestCase):
         ticket.status = status
         ticket.assignee = user
         ticket.save()
-
 
 
     def test_index(self):

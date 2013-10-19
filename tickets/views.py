@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -21,6 +21,7 @@ class TicketChange:
 class IndexView(TemplateView):
     template_name = 'index.html'
 
+
 class TicketList(ListView):
     model = Ticket
     context_object_name = 'tickets'
@@ -34,6 +35,8 @@ class TicketList(ListView):
             queryset = queryset.filter(status__pk=self.kwargs['status_id'])
         if 'company_id' in self.kwargs:
             queryset = queryset.filter(company__pk=self.kwargs['company_id'])
+        if 'department_id' in self.kwargs:
+            queryset = queryset.filter(tier__department__pk=self.kwargs['department_id'])
         return queryset
 
     @method_decorator(login_required)
