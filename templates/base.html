@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <title>Handprints</title>
-  <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-1.10.2.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}chartjs/Chart.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
   <link href="{{ STATIC_URL }}/bootstrap/css/bootstrap.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+  {% block head %} {% endblock %}
 </head>
 
 <body>
@@ -41,6 +41,7 @@
             <li><a href="{% url "department" 3 %}">Development</a></li>
             <li><a href="{% url "status" 1 %}">Open</a></li>
             <li><a href="{% url "status" 2 %}">Closed</a></li>
+            <li><a href="{% url "overall_stats" %}">Stats</a></li>
           </ul>
         </li>
         {% if user.pk %}
