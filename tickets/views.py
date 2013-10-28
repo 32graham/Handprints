@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView
 from datetime import datetime
 from django.utils.timezone import utc
+from django.core.management import call_command
 from .models import Ticket, TicketStatusChange, TicketTierChange
 from .forms import EditTicketForm, CommentForm, NewTicketForm
 
@@ -98,6 +99,8 @@ def handle_ticket_post(request, ticketForm):
         tierChange.user = request.user
         tierChange.save()
 
+    call_command("update_index")
+
     return HttpResponseRedirect('/tickets/' + str(model.pk) + '/')
 
 
@@ -119,6 +122,7 @@ def new_ticket(request):
             ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
             ticket.user_created = request.user
             ticket.save()
+            call_command("update_index")
             return HttpResponseRedirect('/tickets/status/1/')
     else:
         form = NewTicketForm()
