@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from simple_history.models import HistoricalRecords
 
 
 class Company(models.Model):
@@ -38,12 +37,10 @@ class Ticket(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     company = models.ForeignKey(Company)
-    is_blocker = models.BooleanField(verbose_name=u'blocker')
+    created_date_time = models.DateTimeField()
+    user_created = models.ForeignKey(User)
     tier = models.ForeignKey(Tier)
     status = models.ForeignKey(Status)
-    assignee = models.ForeignKey(User, related_name='assignments')
-    changed_by = models.ForeignKey(User, related_name='ticket_changes')
-    history = HistoricalRecords()
 
     def __unicode__(self):
         return self.title
@@ -52,12 +49,37 @@ class Ticket(models.Model):
         return reverse('tickets.views.ticket', args=[str(self.pk)])
 
 
-class TicketComment(models.Model):
-    ticket = models.ForeignKey(Ticket)
-    comment = models.TextField()
+class TicketTierChange(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='tier_changes')
     date_time = models.DateTimeField()
+    new_tier = models.ForeignKey(Tier)
     user = models.ForeignKey(User)
-    is_public = models.BooleanField()
+
+    def __unicode__(self):
+        return self.user.get_full_name() + ' ' + self.new_tier.__unicode__()
+
+    class Meta:
+      get_latest_by = 'date_time'
+
+
+class TicketStatusChange(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='status_changes')
+    date_time = models.DateTimeField()
+    new_status = models.ForeignKey(Status)
+    user = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return self.user.get_full_name() + ' ' + self.new_status.name
+
+    class Meta:
+      get_latest_by = 'date_time'
+
+
+class TicketComment(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='comments')
+    date_time = models.DateTimeField()
+    comment = models.TextField()
+    user = models.ForeignKey(User)
     attachment = models.FileField(upload_to='attachment', null=True, blank=True)
 
     def __unicode__(self):

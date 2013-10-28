@@ -15,7 +15,7 @@
     <div class="col-sm-3">
         <table class="table">
             <tr>
-                <td>TicketID</td>
+                <td>Ticket Number</td>
                 <td>{{ticket.pk}}</td>
             </tr>
             <tr>
@@ -73,13 +73,13 @@
         </div>
     </div>
 
-  {% else %}
+  {% elif event.new_tier %}
 
     <div class="panel panel-warning">
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    {{event.changed_by}}
+                    {{event.user.get_full_name}}
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -92,7 +92,32 @@
                     <i class="icon-chevron-sign-right icon-4x hidden-xs"></i>
                 </div>
                 <div class="col-sm-11">
-                    <p>{{event.field_name}} changed from {{event.old_value}} to {{event.new_value}}</p>
+                    <p>Tier changed to {{event.new_tier}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  {% elif event.new_status %}
+
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{event.user.get_full_name}}
+                </div>
+                <div class="col-sm-6 text-right text-muted">
+                    {{event.date_time}}
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <i class="icon-chevron-sign-right icon-4x hidden-xs"></i>
+                </div>
+                <div class="col-sm-11">
+                    <p>Status changed to {{event.new_status}}</p>
                 </div>
             </div>
         </div>

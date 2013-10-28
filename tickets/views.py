@@ -2,20 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
 from django.views.generic import ListView, TemplateView
 from datetime import datetime
-from .models import Ticket, Tier, Status
+from django.utils.timezone import utc
+from .models import Ticket, TicketStatusChange, TicketTierChange
 from .forms import EditTicketForm, CommentForm, NewTicketForm
-
-
-class TicketChange:
-    def __init__(self, field_name=None, old_value=None, new_value=None, date_time=None, changed_by=None):
-        self.field_name = field_name
-        self.old_value = old_value
-        self.new_value = new_value
-        self.date_time = date_time
-        self.changed_by = changed_by
 
 
 class IndexView(TemplateView):
@@ -45,34 +36,13 @@ class TicketList(ListView):
 
 
 def get_events(ticket):
-    events = list(ticket.ticketcomment_set.all())
+    comments = list(ticket.comments.all())
+    tier_changes = list(ticket.tier_changes.all())
+    status_changes = list(ticket.status_changes.all())
 
-    all_changes = ticket.history.order_by('history_date')
-
-    previous_change = None
-    for change in all_changes:
-        if previous_change != None:
-            if change.tier_id != previous_change.tier_id:
-                new_tier = Tier.objects.get(pk=change.tier_id)
-                old_tier = Tier.objects.get(pk=previous_change.tier_id)
-                changed_by = User.objects.get(pk=change.changed_by_id)
-                events.append(TicketChange('Tier', old_tier.name, new_tier.name, change.history_date, changed_by.get_full_name()))
-
-            if change.status_id != previous_change.status_id:
-                new_status = Status.objects.get(pk=change.status_id)
-                old_status = Status.objects.get(pk=previous_change.status_id)
-                changed_by = User.objects.get(pk=change.changed_by_id)
-                events.append(TicketChange('Status', old_status.name, new_status.name, change.history_date, changed_by.get_full_name()))
-
-            if change.assignee_id != previous_change.assignee_id:
-                new_assignee = User.objects.get(pk=change.assignee_id)
-                old_assignee = User.objects.get(pk=previous_change.assignee_id)
-                changed_by = User.objects.get(pk=change.changed_by_id)
-                events.append(TicketChange('Assignee', old_assignee.get_full_name(), new_assignee.get_full_name(), change.history_date, changed_by.get_full_name()))
-
-        previous_change = change
-
+    events = comments + tier_changes + status_changes
     events = sorted(events, key=lambda event: event.date_time)
+
     return events
 
 
@@ -85,20 +55,12 @@ def ticket(request, ticket_id):
         ticketForm = EditTicketForm(request.POST, instance=ticket)
         commentForm = CommentForm()
         if ticketForm.is_valid():
-            model = ticketForm.save(commit=False)
-            model.changed_by = request.user
-            model.save()
-            return HttpResponseRedirect('/tickets/' + ticket_id + '/')
+            return handle_ticket_post(request, ticketForm)
     elif request.method == 'POST' and 'comment_post' in request.POST:
-        commentForm = CommentForm(request.POST)
+        commentForm = CommentForm(request.POST, request.FILES)
         ticketForm = EditTicketForm(instance=ticket)
         if commentForm.is_valid():
-            comment = commentForm.save(commit=False)
-            comment.date_time = datetime.now()
-            comment.ticket = ticket
-            comment.user = request.user
-            comment.save()
-            return HttpResponseRedirect('/tickets/' + ticket_id + '/')
+            return handle_comment_post(request, commentForm, ticket)
     else:
         ticketForm = EditTicketForm(instance=ticket)
         commentForm = CommentForm()
@@ -115,13 +77,47 @@ def ticket(request, ticket_id):
     )
 
 
+def handle_ticket_post(request, ticketForm):
+    model = ticketForm.save(commit=False)
+    previous_ticket = Ticket.objects.get(pk=model.pk)
+    model.save()
+
+    if previous_ticket is None or previous_ticket.status != model.status:
+        statusChange = TicketStatusChange()
+        statusChange.ticket = model
+        statusChange.date_time = datetime.utcnow().replace(tzinfo=utc)
+        statusChange.new_status = model.status
+        statusChange.user = request.user
+        statusChange.save()
+
+    if previous_ticket is None or previous_ticket.tier != model.tier:
+        tierChange = TicketTierChange()
+        tierChange.ticket = model
+        tierChange.date_time = datetime.utcnow().replace(tzinfo=utc)
+        tierChange.new_tier = model.tier
+        tierChange.user = request.user
+        tierChange.save()
+
+    return HttpResponseRedirect('/tickets/' + str(model.pk) + '/')
+
+
+def handle_comment_post(request, commentForm, ticket):
+    comment = commentForm.save(commit=False)
+    comment.date_time = datetime.now()
+    comment.ticket = ticket
+    comment.user = request.user
+    comment.save()
+    return HttpResponseRedirect('/tickets/' + str(ticket.pk) + '/')
+
+
 @login_required
 def new_ticket(request):
     if request.method == 'POST':
         form = NewTicketForm(request.POST, {})
         if(form.is_valid()):
             ticket = form.save(commit=False)
-            ticket.changed_by = request.user
+            ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
+            ticket.user_created = request.user
             ticket.save()
             return HttpResponseRedirect('/tickets/status/1/')
     else:

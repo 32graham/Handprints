@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.timezone import utc
 from .models import Ticket, Company, Tier, Department, Status, TicketComment
-from .views import TicketChange
 
 class TicketsViewsTestCase(TestCase):
 
@@ -16,31 +15,27 @@ class TicketsViewsTestCase(TestCase):
         status = Status.objects.create(name='status')
         status2 = Status.objects.create(name='status2')
         user = User.objects.create_user(username='username', password='password')
-        user2 = User.objects.create_user(username='username2', password='password2')
+        User.objects.create_user(username='username2', password='password2')
         ticket = Ticket.objects.create(
             title='title',
             description='description',
+            created_date_time=datetime.utcnow().replace(tzinfo=utc),
+            user_created=user,
             company=company,
-            is_blocker=False,
             tier=tier,
             status=status,
-            assignee=user,
-            changed_by=user,
         )
         TicketComment.objects.create(
             ticket=ticket,
             comment='comment',
             date_time=datetime.utcnow().replace(tzinfo=utc),
             user=user,
-            is_public=False,
         )
         ticket.tier = tier2
         ticket.status = status2
-        ticket.assignee = user2
         ticket.save()
         ticket.tier = tier
         ticket.status = status
-        ticket.assignee = user
         ticket.save()
 
 
@@ -182,17 +177,3 @@ class TicketsViewsTestCase(TestCase):
     def test_ticket_absolute_url(self):
         ticket = Ticket.objects.get(pk=1)
         self.assertEqual(ticket.get_absolute_url(), reverse('ticket', args=[ticket.pk]))
-
-
-    def test_ticket_change(self):
-        date = datetime.utcnow().replace(tzinfo=utc)
-        ticket_change = TicketChange(
-            field_name='field_name',
-            old_value='old_value',
-            new_value='new_value',
-            date_time=date,
-        )
-        self.assertEqual(ticket_change.field_name, 'field_name')
-        self.assertEqual(ticket_change.old_value, 'old_value')
-        self.assertEqual(ticket_change.new_value, 'new_value')
-        self.assertEqual(ticket_change.date_time, date)

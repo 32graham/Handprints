@@ -13,8 +13,8 @@ class CommentForm(forms.ModelForm):
 class EditTicketForm(forms.ModelForm):
 
     class Meta:
+        fields = ['tier', 'status',]
         model = Ticket
-        fields = ['assignee', 'is_blocker', 'tier', 'status',]
 
 
 class NewTicketForm(forms.ModelForm):
@@ -25,8 +25,6 @@ class NewTicketForm(forms.ModelForm):
             'title',
             'description',
             'company',
-            'assignee',
             'tier',
-            'status',
-            'is_blocker',
+            'status'
         ]
