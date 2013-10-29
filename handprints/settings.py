@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '', #/home/josh/database/handprints',                      # Or path to database file if using sqlite3.
+        'NAME': 'handprints_db', #/home/josh/database/handprints',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'db_admin',
         'PASSWORD': 'db_admin',
@@ -51,7 +51,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/jgraham32/webapps/media/' #'/home/josh/dev/media/'
+MEDIA_ROOT = '/home/jgraham32/media/' #'/home/josh/dev/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -75,7 +75,6 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     chartkick.js(),
-    '/home/josh/dev/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -112,7 +111,7 @@ ROOT_URLCONF = 'handprints.urls'
 WSGI_APPLICATION = 'handprints.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/josh/dev/handprints/templates/',
+    '/home/jgraham32/webapps/handprints_app/handprints/templates/',
 )
 
 INSTALLED_APPS = (
@@ -167,6 +166,6 @@ LOGIN_REDIRECT_URL = '/tickets/status/1/'
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': '/home/josh/dev/search/whoosh_index',
+        'PATH': '/home/jgraham32/search/whoosh_index',    
     }
 }

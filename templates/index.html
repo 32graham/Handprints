@@ -7,10 +7,16 @@
         <h1><i class="icon-fixed-width icon-ticket icon-large"></i>Handprints</h1>
         <p class="lead">Simple Awesome Ticket Management</p>
         <p>
+           {% if user.pk %}
+           <a href="{% url "status" 1 %}" class="btn btn-primary btn-lg">
+            Get Started
+          </a>
+          {% else %}
           <a href="{% url "auth_login" %}" class="btn btn-primary btn-lg">
             <i class="icon-fixed-width icon-signin"></i>
             Login
           </a>
+          {% endif %}
         </p>
     </div>
 </div>
@@ -19,7 +25,7 @@
   <div class="row featurette">
     <div class="col-md-7">
       <h2 class="featurette-heading">Fast. <span class="text-muted">Spend your time resolving tickets rather than waiting.</span></h2>
-      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+      <p class="lead">Handprints is designed to be fast. All pages load lightning fast so your customers get results faster.</p>
     </div>
     <div class="col-md-5">
       <h1 class="text-center"><i class="icon-fixed-width icon-rocket icon-4x"></i></h1>
@@ -34,7 +40,7 @@
     </div>
     <div class="col-md-7">
       <h2 class="featurette-heading">Chronological Communication. <span class="text-muted">Read comments in the order they happended.</span></h2>
-      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+      <p class="lead">Conversations occur over time, your ticketing system should reflect that. Handprints does not try to categorize information by type, instead, it shows it in the order it was entered. The result is a readable ticket that gets your staff informed on an issue fast. No more jumping around trying to figure out what happened, just read from top to bottom.</p>
     </div>
   </div>
 
@@ -44,11 +50,29 @@
   <div class="row featurette">
     <div class="col-md-7">
       <h2 class="featurette-heading">Reporting. <span class="text-muted">Understand your data with powerful reporting.</span></h2>
-      <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+      <p class="lead">Massive piles of text are tough to get information out of. Handprints summarizes your data in intelligent ways so that you can make informed business decisions.</p>
     </div>
     <div class="col-md-5">
       <h1 class="text-center"><i class="icon-fixed-width icon-bar-chart icon-4x"></i></h1>
     </div>
+  </div>
+
+  <div class="container marketing">
+  <div class="row featureete">
+    <div class="col-md-7">
+      <h1 class="text-center">
+        <i class="icon-fixed-width icon-android icon-3x"></i>
+        <i class="icon-fixed-width icon-apple icon-3x"></i>
+        <br>
+        <i class="icon-fixed-width icon-windows icon-3x"></i>
+        <i class="icon-fixed-width icon-linux icon-3x"></i>
+      </h1>
+    </div>
+    <div ckass="col-md-7">
+      <h2 class="featureete-heading">Works Everywhere.</h2>
+      <p class="lead">Sometimes you have to work on tickets from your mobile phone. Handprints offers an amazing experience regardless of platform.</p>
+    </div>
+  </div>
   </div>
 
 </div>
