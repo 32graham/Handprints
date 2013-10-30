@@ -1,30 +1,19 @@
 # Django settings for handprints project.
+import os
+from django.core.exceptions import ImproperlyConfigured
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+def get_environment_variable(name):
+    try:
+        return os.environ[name]
+    except KeyError:
+        error_message = "Set the %s environment variable" % name
+        raise ImproperlyConfigured(error_message)
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
     ('Josh Graham', 'graham.josh@gmail.com'),
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'handprints_db', #/home/josh/database/handprints',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'db_admin',
-        'PASSWORD': 'db_admin',
-        'HOST': '',
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
-
-# Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['handprints.jgraham32.webfactional.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -49,20 +38,10 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/jgraham32/media/' #'/home/josh/dev/media/'
-
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = '/media/'
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/home/jgraham32/webapps/handprints_static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -71,9 +50,6 @@ STATIC_URL = '/static/'
 import chartkick
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     chartkick.js(),
 )
 
@@ -86,7 +62,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'yrh)@_@tyj!58i5p%u(b3d@tn)3ii-&y*ua-0!mjb2hp&=ahv&'
+SECRET_KEY = get_environment_variable("HANDPRINTS_SECRET_KEY")
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -110,10 +86,6 @@ ROOT_URLCONF = 'handprints.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'handprints.wsgi.application'
 
-TEMPLATE_DIRS = (
-    '/home/jgraham32/webapps/handprints_app/handprints/templates/',
-)
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,7 +95,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'crispy_forms',
-    'simple_history',
     'haystack',
     'chartkick',
     'tickets',
@@ -162,10 +133,3 @@ LOGGING = {
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 LOGIN_REDIRECT_URL = '/tickets/status/1/'
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': '/home/jgraham32/search/whoosh_index',    
-    }
-}
