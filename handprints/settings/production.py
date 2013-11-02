@@ -8,7 +8,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'handprints_db',
         'USER': 'db_admin',
-        'PASSWORD': get_envirnonment_variable("HANDPRINTS_DB_PASSWORD"),
+        'PASSWORD': get_environment_variable("HANDPRINTS_DB_PASSWORD"),
         'HOST': '',
         'PORT': '',
     }
