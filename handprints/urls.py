@@ -2,12 +2,14 @@ from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.contrib import admin
 from haystack.views import basic_search
+from tickets.views import IndexView
 
 admin.autodiscover()
 
 
 urlpatterns = patterns(
     '',
+    url(r'^$', IndexView.as_view(),  name='index'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tickets/', include('tickets.urls')),
     url(r'^profiles/', include('profiles.urls')),

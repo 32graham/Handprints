@@ -3,7 +3,7 @@ from tickets import views
 from .views import TicketList, IndexView
 
 urlpatterns = patterns('',
-    url(r'^$',                                   IndexView.as_view(),  name='index'),
+    url(r'^$',                                   IndexView.as_view()),
     url(r'^status/(?P<status_id>\w+)/$',         TicketList.as_view(), name='status'),
     url(r'^tier/(?P<tier_id>\w+)/$',             TicketList.as_view(), name='tier'),
     url(r'^department/(?P<department_id>\w+)/$', TicketList.as_view(), name='department'),
