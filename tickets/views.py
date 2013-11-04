@@ -123,6 +123,7 @@ def new_ticket(request):
             ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
             ticket.user_created = request.user
             ticket.save()
+            form.save_m2m()
             call_command("update_index")
             return HttpResponseRedirect('/tickets/status/1/')
     else:
