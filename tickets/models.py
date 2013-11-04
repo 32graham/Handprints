@@ -41,7 +41,7 @@ class Ticket(models.Model):
     user_created = models.ForeignKey(User, related_name='created_tickets')
     tier = models.ForeignKey(Tier)
     status = models.ForeignKey(Status)
-    assignees = models.ManyToManyField(User)
+    assignees = models.ManyToManyField(User, blank=True)
 
     def __unicode__(self):
         return self.title
