@@ -40,6 +40,21 @@ def push_sources():
     run("git clone https://josh_graham@bitbucket.org/josh_graham/handprints.git /home/jgraham32/webapps/handprints_app/handprints")
 
 
+def update_database():
+    """
+    Update the database using syncdb and south
+    """
+    run("python2.7 /home/jgraham32/webapps/handprints_app/handprints/manage.py syncdb")
+    run("python2.7 /home/jgraham32/webapps/handprints_app/handprints/manage.py migrate tickets")
+
+
+def install_dependencies():
+    """
+    Install required packages
+    """
+    run("pip install -r /home/jgraham32/webapps/handprints_app/handprints/requirements.txt")
+
+
 @task
 def webserver_stop():
     """
@@ -88,6 +103,8 @@ def deploy():
         webserver_stop()
 
     push_sources()
+    #install_dependencies()
+    update_database()
     build_static()
 
     webserver_start()
