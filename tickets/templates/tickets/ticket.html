@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block head %}
+
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static "tickets/handprints.js" %}"></script>
+    <link href="{% static "tickets/handprints.css" %}" rel="stylesheet">
+    {{ ticket_form.media.js }}
+    {{ ticket_form.media.css }}
+
+{% endblock %}
+
 {% block content %}
 
 {% load crispy_forms_tags %}
@@ -28,11 +38,7 @@
         <p class="lead">{{ticket.description}}</p>
     </div>
     <div class="col-sm-3">
-        <form action="{% url "ticket" ticket.pk %}" method="post">{% csrf_token %}
-            {{ ticket_form|crispy }}
-            <input type="submit" class="btn btn-warning" value="Save" name="ticket_post"/>
-        </form>
-
+            {% crispy ticket_form %}
     </div>
 </div>
 

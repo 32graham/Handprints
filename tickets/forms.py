@@ -1,5 +1,9 @@
 from .models import TicketComment, Ticket
 from django import forms
+from django_select2.widgets import Select2MultipleWidget
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
+from django.core.urlresolvers import reverse
 
 
 class CommentForm(forms.ModelForm):
@@ -13,9 +17,28 @@ class CommentForm(forms.ModelForm):
 class EditTicketForm(forms.ModelForm):
 
     class Meta:
-        fields = ['tier', 'status',]
+        widgets = {
+            'assignees': Select2MultipleWidget(select2_options={'closeOnSelect': True})
+        }
+        fields = ['tier', 'status', 'assignees',]
         model = Ticket
 
+    def __init__(self, *args, **kwargs):
+        super(EditTicketForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_action = reverse('ticket', args=[1])
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'tier',
+                'status',
+                Field('assignees', css_class='col-sm-12', css_id='dog'),
+            ),
+            ButtonHolder(
+                Submit('ticket_post', 'Save', css_class='btn-warning')
+            )
+        )
+        self.fields['assignees'].help_text = ''
 
 class NewTicketForm(forms.ModelForm):
 
@@ -26,5 +49,7 @@ class NewTicketForm(forms.ModelForm):
             'description',
             'company',
             'tier',
-            'status'
+            'status',
+            'assignees',
         ]
+        widgets = {'assignees': Select2MultipleWidget}

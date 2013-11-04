@@ -38,9 +38,10 @@ class Ticket(models.Model):
     description = models.TextField()
     company = models.ForeignKey(Company)
     created_date_time = models.DateTimeField()
-    user_created = models.ForeignKey(User)
+    user_created = models.ForeignKey(User, related_name='created_tickets')
     tier = models.ForeignKey(Tier)
     status = models.ForeignKey(Status)
+    assignees = models.ManyToManyField(User)
 
     def __unicode__(self):
         return self.title

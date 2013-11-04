@@ -97,6 +97,8 @@ INSTALLED_APPS = (
     'crispy_forms',
     'haystack',
     'chartkick',
+    'south',
+    'django_select2',
     'tickets',
     'profiles',
     'stats',

@@ -82,6 +82,7 @@ def handle_ticket_post(request, ticketForm):
     model = ticketForm.save(commit=False)
     previous_ticket = Ticket.objects.get(pk=model.pk)
     model.save()
+    ticketForm.save_m2m()
 
     if previous_ticket is None or previous_ticket.status != model.status:
         statusChange = TicketStatusChange()
