@@ -105,7 +105,7 @@ class TicketsViewsTestCase(TestCase):
         resp = self.client.post(reverse('ticket', args=[1]), {
                 'tier': 1,
                 'status': 1,
-                'assignee': 1,
+                'assignees': (1),
                 'ticket_post': '',
             }
         )
@@ -135,7 +135,7 @@ class TicketsViewsTestCase(TestCase):
                 'title': 'title',
                 'description': 'description',
                 'company': 1,
-                'assignee': 1,
+                'assignees': (1),
                 'tier': 1,
                 'status': 1,
                 'is_blocker': 'True',

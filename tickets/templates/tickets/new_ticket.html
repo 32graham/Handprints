@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 
+{% block head %}
+
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static "tickets/handprints.js" %}"></script>
+    <link href="{% static "tickets/handprints.css" %}" rel="stylesheet">
+    {{ form.media.js }}
+    {{ form.media.css }}
+
+{% endblock %}
+
 {% block content %}
 
 {% load crispy_forms_tags %}
 
-<form action="{% url "new_ticket" %}" method="post">{% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" class="btn btn-primary" value="Submit" />
-</form>
+{% crispy form %}
 
 {% endblock %}
 
