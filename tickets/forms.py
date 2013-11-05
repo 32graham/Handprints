@@ -1,4 +1,4 @@
-from .models import TicketComment, Ticket
+from .models import TicketComment, Ticket, ProductVersion
 from django import forms
 from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
@@ -13,14 +13,13 @@ class CommentForm(forms.ModelForm):
         fields = ['comment', 'attachment',]
 
 
-
 class EditTicketForm(forms.ModelForm):
 
     class Meta:
         widgets = {
             'assignees': Select2MultipleWidget(select2_options={'closeOnSelect': True})
         }
-        fields = ['tier', 'status', 'assignees',]
+        fields = ['tier', 'status', 'assignees', 'product',]
         model = Ticket
 
     def __init__(self, *args, **kwargs):
@@ -30,6 +29,7 @@ class EditTicketForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 '',
+                'product',
                 'tier',
                 'status',
                 Field('assignees', css_class='col-sm-12'),
@@ -39,6 +39,7 @@ class EditTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
+        self.fields['product'] = forms.ModelChoiceField(queryset=ProductVersion.objects.order_by('product__name', 'major', 'minor', 'revision', 'build'))
 
 
 class NewTicketForm(forms.ModelForm):
@@ -50,6 +51,7 @@ class NewTicketForm(forms.ModelForm):
         fields = [
             'title',
             'description',
+            'product',
             'company',
             'tier',
             'status',
@@ -66,6 +68,7 @@ class NewTicketForm(forms.ModelForm):
                 '',
                 'title',
                 'description',
+                'product',
                 'company',
                 'tier',
                 'status',
@@ -76,3 +79,5 @@ class NewTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
+        self.fields['product'] = forms.ModelChoiceField(queryset=ProductVersion.objects.order_by('product__name', 'major', 'minor', 'revision', 'build'))
+
