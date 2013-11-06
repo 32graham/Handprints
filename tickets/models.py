@@ -67,6 +67,7 @@ class Ticket(models.Model):
     status = models.ForeignKey(Status)
     assignees = models.ManyToManyField(User, blank=True)
     product = models.ForeignKey(ProductVersion, blank=True, null=True)
+    user_changed = models.ForeignKey(User, related_name='+')
 
     def __unicode__(self):
         return self.title
@@ -78,7 +79,8 @@ class Ticket(models.Model):
 class TicketTierChange(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='tier_changes')
     date_time = models.DateTimeField()
-    new_tier = models.ForeignKey(Tier)
+    new_tier = models.ForeignKey(Tier, related_name='+')
+    old_tier = models.ForeignKey(Tier, related_name='+')
     user = models.ForeignKey(User)
 
     def __unicode__(self):
@@ -91,7 +93,8 @@ class TicketTierChange(models.Model):
 class TicketStatusChange(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='status_changes')
     date_time = models.DateTimeField()
-    new_status = models.ForeignKey(Status)
+    new_status = models.ForeignKey(Status, related_name='+')
+    old_status = models.ForeignKey(Status, related_name='+')
     user = models.ForeignKey(User)
 
     def __unicode__(self):

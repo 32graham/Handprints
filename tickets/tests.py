@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.timezone import utc
-from .models import Ticket, Company, Tier, Department, Status, TicketComment
+from .models import Ticket, Company, Tier, Department, Status, TicketComment, Product, ProductVersion
 
 class TicketsViewsTestCase(TestCase):
 
@@ -16,14 +16,18 @@ class TicketsViewsTestCase(TestCase):
         status2 = Status.objects.create(name='status2')
         user = User.objects.create_user(username='username', password='password')
         User.objects.create_user(username='username2', password='password2')
+        product = Product.objects.create(name='product')
+        productVersion = ProductVersion.objects.create(major=1, minor=0, product=product)
         ticket = Ticket.objects.create(
             title='title',
             description='description',
             created_date_time=datetime.utcnow().replace(tzinfo=utc),
             user_created=user,
+            user_changed=user,
             company=company,
             tier=tier,
             status=status,
+            product=productVersion,
         )
         TicketComment.objects.create(
             ticket=ticket,
@@ -105,6 +109,7 @@ class TicketsViewsTestCase(TestCase):
         resp = self.client.post(reverse('ticket', args=[1]), {
                 'tier': 1,
                 'status': 1,
+                'product': 1,
                 'assignees': (1),
                 'ticket_post': '',
             }
@@ -135,10 +140,11 @@ class TicketsViewsTestCase(TestCase):
                 'title': 'title',
                 'description': 'description',
                 'company': 1,
-                'assignees': (1),
                 'tier': 1,
                 'status': 1,
-                'is_blocker': 'True',
+                'assignees': (1),
+                'product': 1,
+                'new_ticket': '',
             }
         )
         self.assertEqual(resp.status_code, 302)

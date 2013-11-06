@@ -6,7 +6,7 @@ from django.views.generic import ListView, TemplateView
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
-from .models import Ticket, TicketStatusChange, TicketTierChange
+from .models import Ticket
 from .forms import EditTicketForm, CommentForm, NewTicketForm
 
 
@@ -78,33 +78,18 @@ def ticket(request, ticket_id):
     )
 
 
+@login_required
 def handle_ticket_post(request, ticketForm):
     model = ticketForm.save(commit=False)
-    previous_ticket = Ticket.objects.get(pk=model.pk)
+    model.user_changed = request.user
     model.save()
     ticketForm.save_m2m()
 
-    if previous_ticket is None or previous_ticket.status != model.status:
-        statusChange = TicketStatusChange()
-        statusChange.ticket = model
-        statusChange.date_time = datetime.utcnow().replace(tzinfo=utc)
-        statusChange.new_status = model.status
-        statusChange.user = request.user
-        statusChange.save()
-
-    if previous_ticket is None or previous_ticket.tier != model.tier:
-        tierChange = TicketTierChange()
-        tierChange.ticket = model
-        tierChange.date_time = datetime.utcnow().replace(tzinfo=utc)
-        tierChange.new_tier = model.tier
-        tierChange.user = request.user
-        tierChange.save()
-
     call_command("update_index")
-
     return HttpResponseRedirect('/tickets/' + str(model.pk) + '/')
 
 
+@login_required
 def handle_comment_post(request, commentForm, ticket):
     comment = commentForm.save(commit=False)
     comment.date_time = datetime.now()
@@ -118,10 +103,12 @@ def handle_comment_post(request, commentForm, ticket):
 def new_ticket(request):
     if request.method == 'POST':
         form = NewTicketForm(request.POST, {})
+
         if(form.is_valid()):
             ticket = form.save(commit=False)
             ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
             ticket.user_created = request.user
+            ticket.user_changed = request.user
             ticket.save()
             form.save_m2m()
             call_command("update_index")
