@@ -6,7 +6,7 @@ from django.views.generic import ListView, TemplateView
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
-from .models import Ticket
+from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved
 from .forms import EditTicketForm, CommentForm, NewTicketForm
 
 
@@ -40,8 +40,9 @@ def get_events(ticket):
     comments = list(ticket.comments.all())
     tier_changes = list(ticket.tier_changes.all())
     status_changes = list(ticket.status_changes.all())
+    assignee_changes = list(ticket.assignee_changes.all())
 
-    events = comments + tier_changes + status_changes
+    events = comments + tier_changes + status_changes + assignee_changes
     events = sorted(events, key=lambda event: event.date_time)
 
     return events
@@ -50,13 +51,14 @@ def get_events(ticket):
 @login_required
 def ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
+    ticket.user = request.user
     events = get_events(ticket)
 
     if request.method == 'POST' and 'ticket_post' in request.POST:
         ticketForm = EditTicketForm(request.POST, instance=ticket)
         commentForm = CommentForm()
         if ticketForm.is_valid():
-            return handle_ticket_post(request, ticketForm)
+            return handle_ticket_post(ticketForm)
     elif request.method == 'POST' and 'comment_post' in request.POST:
         commentForm = CommentForm(request.POST, request.FILES)
         ticketForm = EditTicketForm(instance=ticket)
@@ -78,12 +80,29 @@ def ticket(request, ticket_id):
     )
 
 
-@login_required
-def handle_ticket_post(request, ticketForm):
-    model = ticketForm.save(commit=False)
-    model.user_changed = request.user
-    model.save()
-    ticketForm.save_m2m()
+def handle_ticket_post(ticketForm):
+    old_model = ticketForm.instance
+    old_assignees = set(old_model.assignees.all())
+
+    model = ticketForm.save()
+
+    new_assignees = set(model.assignees.all())
+    added = new_assignees - old_assignees
+    removed = old_assignees - new_assignees
+
+    if len(added) + len(removed) > 0:
+        date_time = datetime.utcnow().replace(tzinfo=utc)
+
+        change_set = TicketAssigneeChangeSet.objects.create(
+            ticket=model,
+            date_time=date_time,
+            user=model.user_changed)
+
+        for added in added:
+            TicketAssigneeAdded.objects.create(change_set=change_set, assignee=added)
+
+        for removed in removed:
+            TicketAssigneeRemoved.objects.create(change_set=change_set, assignee=removed)
 
     call_command("update_index")
     return HttpResponseRedirect('/tickets/' + str(model.pk) + '/')

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models.signals import m2m_changed
 
 
 class Product(models.Model):
@@ -113,3 +114,25 @@ class TicketComment(models.Model):
 
     def __unicode__(self):
         return self.comment
+
+
+class TicketAssigneeChangeSet(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='assignee_changes')
+    date_time = models.DateTimeField()
+    user = models.ForeignKey(User, related_name='+')
+
+
+class TicketAssigneeAdded(models.Model):
+    change_set = models.ForeignKey(TicketAssigneeChangeSet, related_name='added_assignees')
+    assignee = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return self.assignee.get_full_name()
+
+
+class TicketAssigneeRemoved(models.Model):
+    change_set = models.ForeignKey(TicketAssigneeChangeSet, related_name='removed_assignees')
+    assignee = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return self.assignee.get_full_name()

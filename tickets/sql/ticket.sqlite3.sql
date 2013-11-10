@@ -1,5 +1,7 @@
 DROP TRIGGER IF EXISTS tickets_tickettierchange_trigger;
 DROP TRIGGER IF EXISTS tickets_ticketstatuschange_trigger;
+DROP TRIGGER IF EXISTS tickets_ticketassigneechange_insert_trigger;
+DROP TRIGGER IF EXISTS tickets_ticketassigneechange_delete_trigger;
 
 CREATE TRIGGER tickets_tickettierchange_trigger AFTER UPDATE OF tier_id
 ON tickets_ticket
@@ -44,3 +46,4 @@ BEGIN
         new.user_changed_id
     );
 END;
+

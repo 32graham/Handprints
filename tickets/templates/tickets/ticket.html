@@ -129,7 +129,42 @@
         </div>
     </div>
 
+  {% elif event.added_assignees %}
 
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{event.user.get_full_name}}
+                </div>
+                <div class="col-sm-6 text-right text-muted">
+                    {{event.date_time}}
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <i class="icon-chevron-sign-right icon-4x hidden-xs"></i>
+                </div>
+                <div class="col-sm-11">
+                    Assignees:
+                    {% if event.added_assignees.all %}
+                        <br>Added:
+                        {% for added in event.added_assignees.all %}
+                            {{ added }},
+                        {% endfor %}
+                    {% endif %}
+                    {% if event.removed_assignees.all %}
+                        <br>Removed:
+                        {% for removed in event.removed_assignees.all %}
+                            {{ removed }},
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 
   {% endif %}
 
