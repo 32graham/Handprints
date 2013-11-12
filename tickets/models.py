@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import m2m_changed
 
 
 class Product(models.Model):
@@ -67,7 +66,7 @@ class Ticket(models.Model):
     tier = models.ForeignKey(Tier)
     status = models.ForeignKey(Status)
     assignees = models.ManyToManyField(User, blank=True)
-    product = models.ForeignKey(ProductVersion, blank=True, null=True)
+    product = models.ForeignKey(Product, blank=True, null=True)
     user_changed = models.ForeignKey(User, related_name='+')
 
     def __unicode__(self):

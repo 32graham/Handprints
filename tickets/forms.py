@@ -1,4 +1,4 @@
-from .models import TicketComment, Ticket, ProductVersion
+from .models import TicketComment, Ticket, Product
 from django import forms
 from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
@@ -39,7 +39,7 @@ class EditTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['product'] = forms.ModelChoiceField(queryset=ProductVersion.objects.order_by('product__name', 'major', 'minor', 'revision', 'build'))
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.order_by('name'))
 
 
 class NewTicketForm(forms.ModelForm):
@@ -79,5 +79,5 @@ class NewTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['product'] = forms.ModelChoiceField(queryset=ProductVersion.objects.order_by('product__name', 'major', 'minor', 'revision', 'build'))
+        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.order_by('name'))
 

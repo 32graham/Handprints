@@ -17,7 +17,7 @@ class TicketsViewsTestCase(TestCase):
         user = User.objects.create_user(username='username', password='password')
         User.objects.create_user(username='username2', password='password2')
         product = Product.objects.create(name='product')
-        productVersion = ProductVersion.objects.create(major=1, minor=0, product=product)
+        ProductVersion.objects.create(major=1, minor=0, product=product)
         ticket = Ticket.objects.create(
             title='title',
             description='description',
@@ -27,7 +27,7 @@ class TicketsViewsTestCase(TestCase):
             company=company,
             tier=tier,
             status=status,
-            product=productVersion,
+            product=product,
         )
         TicketComment.objects.create(
             ticket=ticket,
