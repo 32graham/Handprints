@@ -15,6 +15,9 @@ class CommentForm(forms.ModelForm):
 
 class EditTicketForm(forms.ModelForm):
 
+    product = forms.ModelChoiceField(queryset=Product.objects.order_by('name'), required=False)
+
+
     class Meta:
         widgets = {
             'assignees': Select2MultipleWidget(select2_options={'closeOnSelect': True})
@@ -39,10 +42,11 @@ class EditTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.order_by('name'))
 
 
 class NewTicketForm(forms.ModelForm):
+
+    product = forms.ModelChoiceField(queryset=Product.objects.order_by('name'), required=False)
 
     class Meta:
         widgets = {
@@ -79,5 +83,3 @@ class NewTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['product'] = forms.ModelChoiceField(queryset=Product.objects.order_by('name'))
-
