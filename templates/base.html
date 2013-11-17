@@ -2,12 +2,17 @@
 <html lang="en">
 
 <head>
+
+  {% load staticfiles %}
+
   <title>Handprints</title>
   <script src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+  <link href="{% static "tickets/handprints.css" %}" rel="stylesheet">
   {% block head %} {% endblock %}
+
 </head>
 
 <body>

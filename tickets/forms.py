@@ -10,7 +10,7 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = TicketComment
-        fields = ['comment', 'attachment',]
+        fields = ['comment', 'is_public', 'attachment',]
 
 
 class EditTicketForm(forms.ModelForm):

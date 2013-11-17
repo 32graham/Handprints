@@ -1,3 +1,7 @@
+body {
+    padding: 0px 0px 45px 0px;
+}
+
 #s2id_id_assignees {
     padding: 0px !important;
 }

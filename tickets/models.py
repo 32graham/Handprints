@@ -110,6 +110,7 @@ class TicketComment(models.Model):
     comment = models.TextField()
     user = models.ForeignKey(User)
     attachment = models.FileField(upload_to='attachment', null=True, blank=True)
+    is_public = models.BooleanField()
 
     def __unicode__(self):
         return self.comment
@@ -119,6 +120,19 @@ class TicketAssigneeChangeSet(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='assignee_changes')
     date_time = models.DateTimeField()
     user = models.ForeignKey(User, related_name='+')
+
+    def __unicode__(self):
+        added = ", ".join(str(assignee) for assignee in self.added_assignees.all())
+        removed = ", ".join(str(assignee) for assignee in self.removed_assignees.all())
+
+        string = 'Assignees'
+
+        if len(added) > 0:
+            string = string + ' added ' + added
+        if len(removed) > 0:
+            string = string + ' removed ' + removed
+
+        return string
 
 
 class TicketAssigneeAdded(models.Model):

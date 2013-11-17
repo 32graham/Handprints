@@ -4,7 +4,6 @@
 
     {% load staticfiles %}
     <script type="text/javascript" src="{% static "tickets/handprints.js" %}"></script>
-    <link href="{% static "tickets/handprints.css" %}" rel="stylesheet">
     {{ ticket_form.media.js }}
     {{ ticket_form.media.css }}
 
@@ -48,11 +47,14 @@
 
   {% if event.comment %}
 
+
+
     <div class="panel panel-info">
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
                     {{event.user.get_full_name}}
+                    {% if not event.is_public %}(Private){% endif %}
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -60,12 +62,15 @@
             </div>
         </div>
         <div class="panel-body">
+
             <div class="row">
                 <div class="col-xs-0 col-sm-1">
                     <i class="icon-comment icon-4x hidden-xs"></i>
                 </div>
                 <div class="col-sm-8">
+                    {% if event.is_public %}<strong>{% endif %}
                     {{event}}
+                    {% if event.is_public %}</strong>{% endif %}
                 </div>
                 {% if event.attachment %}
                 <div class="col-xs-0 col-sm-1">
@@ -78,6 +83,7 @@
             </div>
         </div>
     </div>
+
 
   {% elif event.new_tier %}
 
@@ -148,19 +154,7 @@
                     <i class="icon-chevron-sign-right icon-4x hidden-xs"></i>
                 </div>
                 <div class="col-sm-11">
-                    Assignees:
-                    {% if event.added_assignees.all %}
-                        <br>Added:
-                        {% for added in event.added_assignees.all %}
-                            {{ added }},
-                        {% endfor %}
-                    {% endif %}
-                    {% if event.removed_assignees.all %}
-                        <br>Removed:
-                        {% for removed in event.removed_assignees.all %}
-                            {{ removed }},
-                        {% endfor %}
-                    {% endif %}
+                    {{ event }}
                 </div>
             </div>
         </div>
