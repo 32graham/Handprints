@@ -65,7 +65,7 @@ class Ticket(models.Model):
     user_created = models.ForeignKey(User, related_name='created_tickets')
     tier = models.ForeignKey(Tier)
     status = models.ForeignKey(Status)
-    assignees = models.ManyToManyField(User, blank=True)
+    assignees = models.ManyToManyField(User, blank=True, related_name='assignments')
     product = models.ForeignKey(Product, blank=True, null=True)
     user_changed = models.ForeignKey(User, related_name='+')
 
