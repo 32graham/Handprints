@@ -1,4 +1,5 @@
 from .models import TicketComment, Ticket, Product
+from django.contrib.auth.models import User
 from django import forms
 from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
@@ -6,17 +7,22 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Field
 from django.core.urlresolvers import reverse
 
 
-class CommentForm(forms.ModelForm):
+class StaffCommentForm(forms.ModelForm):
 
     class Meta:
         model = TicketComment
         fields = ['comment', 'is_public', 'attachment',]
 
 
+class StandardCommentForm(StaffCommentForm):
+
+    class Meta(StaffCommentForm.Meta):
+        exclude = ('is_public')
+
+
 class EditTicketForm(forms.ModelForm):
 
     product = forms.ModelChoiceField(queryset=Product.objects.order_by('name'), required=False)
-
 
     class Meta:
         widgets = {
@@ -42,6 +48,7 @@ class EditTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
+        self.fields['assignees'].queryset = User.objects.filter(is_staff=True)
 
 
 class NewTicketForm(forms.ModelForm):

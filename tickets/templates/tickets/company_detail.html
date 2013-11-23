@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1><i class="icon-fixed-width icon-building"></i>{{company}}</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <h3>Users</h3>
+
+        <ul class="list-unstyled">
+        {% for profile in company.profile_set.all %}
+            <li><a href="{% url "profile" profile.user.pk %}">{{profile.user.get_full_name}}</a></li>
+        {% endfor %}
+        <ul>
+
+    </div>
+    <div class="col-sm-4">
+        <h3>Open Issues</h3>
+
+        <ul class="list-unstyled">
+        {% for ticket in open_tickets %}
+            <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
+        {% endfor %}
+        <ul>
+    </div>
+    <div class="col-sm-4">
+        <h3>Recently Closed Issues</h3>
+
+        <ul class="list-unstyled">
+        {% for ticket in recently_closed_tickets %}
+            <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

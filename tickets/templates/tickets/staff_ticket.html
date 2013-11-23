@@ -29,22 +29,15 @@
             </tr>
             <tr>
                 <td>Status</td>
-                <td>{{ticket.status}}</td>
-            </tr>
-            <tr>
-                <td>Tier</td>
-                <td>{{ticket.tier}}</td>
-            </tr>
-            <tr>
-                <td>Assigned</td>
-                <td>
-                    {{ ticket.assignees.all|join:", " }}
-                </td>
+                <td><a href="{% url "status" ticket.status.pk %}">{{ticket.status}}</a></td>
             </tr>
         </table>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-6">
         <p class="lead">{{ticket.description}}</p>
+    </div>
+    <div class="col-sm-3">
+            {% crispy ticket_form %}
     </div>
 </div>
 
@@ -52,13 +45,16 @@
 
 {% for event in events %}
 
-  {% if event.comment and event.is_public %}
+  {% if event.comment %}
+
+
 
     <div class="panel panel-info">
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
                     {{event.user.get_full_name}}
+                    {% if not event.is_public %}(Private){% endif %}
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -132,6 +128,32 @@
                 </div>
                 <div class="col-sm-11">
                     <p>Status changed from {{event.old_status}} to {{event.new_status}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  {% elif event.added_assignees %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-sm-6">
+                    {{event.user.get_full_name}}
+                    (Private)
+                </div>
+                <div class="col-sm-6 text-right text-muted">
+                    {{event.date_time}}
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1">
+                    <i class="icon-user icon-4x hidden-xs"></i>
+                </div>
+                <div class="col-sm-11">
+                    {{ event }}
                 </div>
             </div>
         </div>

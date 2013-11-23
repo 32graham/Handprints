@@ -1,13 +1,18 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
+from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
-from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved
-from .forms import EditTicketForm, CommentForm, NewTicketForm
+from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Company, TicketStatusChange
+from .forms import EditTicketForm, StaffCommentForm, StandardCommentForm, NewTicketForm
+
+
+def staff_or_same_company(user, company):
+    return user.is_staff or company.pk == user.profile.company.pk
 
 
 class IndexView(TemplateView):
@@ -31,16 +36,22 @@ class TicketList(ListView):
             queryset = queryset.filter(tier__department__pk=self.kwargs['department_id'])
         return queryset
 
-    @method_decorator(login_required)
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, *args, **kwargs):
         return super(TicketList, self).dispatch(*args, **kwargs)
 
 
-def get_events(ticket):
-    comments = list(ticket.comments.all())
+def get_events(request, ticket):
+
+    if(request.user.is_staff):
+        comments = list(ticket.comments.all())
+        assignee_changes = list(ticket.assignee_changes.all())
+    else:
+        comments = list(ticket.comments.filter(is_public=True))
+        assignee_changes = []
+
     tier_changes = list(ticket.tier_changes.all())
     status_changes = list(ticket.status_changes.all())
-    assignee_changes = list(ticket.assignee_changes.all())
 
     events = comments + tier_changes + status_changes + assignee_changes
     events = sorted(events, key=lambda event: event.date_time)
@@ -50,27 +61,64 @@ def get_events(ticket):
 
 @login_required
 def ticket(request, ticket_id):
+    if(request.user.is_staff):
+        return staff_ticket(request, ticket_id)
+    else:
+        return standard_ticket(request, ticket_id)
+
+
+@login_required
+def standard_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
-    ticket.user = request.user
-    events = get_events(ticket)
+
+    if not ticket.company.pk == request.user.profile.company.pk:
+        raise PermissionDenied
+
+    events = get_events(request, ticket)
+
+    if request.method == 'POST':
+        ticket.user_changed = request.user
+        commentForm = StandardCommentForm(request.POST, request.FILES)
+        if commentForm.is_valid():
+            return handle_comment_post(request, commentForm, ticket)
+    else:
+        commentForm = StandardCommentForm()
+
+    return render(
+        request,
+        'tickets/ticket.html',
+        {
+            'ticket': ticket,
+            'comment_form': commentForm,
+            'events': events,
+        }
+    )
+
+
+@login_required
+def staff_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, pk=ticket_id)
+    events = get_events(request, ticket)
 
     if request.method == 'POST' and 'ticket_post' in request.POST:
+        ticket.user_changed = request.user
         ticketForm = EditTicketForm(request.POST, instance=ticket)
-        commentForm = CommentForm()
+        commentForm = StaffCommentForm()
         if ticketForm.is_valid():
             return handle_ticket_post(ticketForm)
     elif request.method == 'POST' and 'comment_post' in request.POST:
-        commentForm = CommentForm(request.POST, request.FILES)
+        ticket.user_changed = request.user
+        commentForm = StaffCommentForm(request.POST, request.FILES)
         ticketForm = EditTicketForm(instance=ticket)
         if commentForm.is_valid():
             return handle_comment_post(request, commentForm, ticket)
     else:
         ticketForm = EditTicketForm(instance=ticket)
-        commentForm = CommentForm()
+        commentForm = StaffCommentForm()
 
     return render(
         request,
-        'tickets/ticket.html',
+        'tickets/staff_ticket.html',
         {
             'ticket': ticket,
             'ticket_form': ticketForm,
@@ -114,6 +162,10 @@ def handle_comment_post(request, commentForm, ticket):
     comment.date_time = datetime.now()
     comment.ticket = ticket
     comment.user = request.user
+
+    if not request.user.is_staff:
+        comment.is_public = True
+
     comment.save()
     return HttpResponseRedirect('/tickets/' + str(ticket.pk) + '/')
 
@@ -139,4 +191,30 @@ def new_ticket(request):
         request,
         'tickets/new_ticket.html',
         {'form': form}
+    )
+
+@login_required
+def company_detail(request, company_id):
+    company = get_object_or_404(Company, pk=company_id)
+    open_tickets = company.ticket_set.filter(status__name='Open')
+    # recently_closed_tickets = TicketStatusChange.objects \
+    #     .filter(ticket__company__pk=company.pk) \
+    #     .order_by('date_time')
+
+    recently_closed_tickets = company.ticket_set.filter(
+            status__name='Closed'
+        ).filter(
+            status_changes__new_status__name='Closed'
+        ).order_by(
+            '-status_changes__date_time'
+        )[:5]
+
+    return render(
+        request,
+        'tickets/company_detail.html',
+        {
+            'company': company,
+            'open_tickets': open_tickets,
+            'recently_closed_tickets': recently_closed_tickets,
+        }
     )

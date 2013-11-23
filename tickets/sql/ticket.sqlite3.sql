@@ -44,4 +44,3 @@ BEGIN
         new.user_changed_id
     );
 END;
-

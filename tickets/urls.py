@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^status/(?P<status_id>\w+)/$',         TicketList.as_view(), name='status'),
     url(r'^tier/(?P<tier_id>\w+)/$',             TicketList.as_view(), name='tier'),
     url(r'^department/(?P<department_id>\w+)/$', TicketList.as_view(), name='department'),
-    url(r'^company/(?P<company_id>\w+)/$',       TicketList.as_view(), name='company'),
+    url(r'^company/(?P<company_id>\w+)/$',       views.company_detail, name='company'),
     url(r'^(?P<ticket_id>\d+)/$',                views.ticket,         name='ticket'),
     url(r'^newticket/$',                         views.new_ticket,     name='new_ticket'),
 )
