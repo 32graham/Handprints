@@ -52,7 +52,7 @@
         </li>
         {% endif %}
         {% if user.pk and not user.is_staff %}
-        <li><a href="{% url "company" user.profile.pk %}"><i class="icon-fixed-width icon-building"></i>Company</a></li>
+        <li><a href="{% url "company" user.profile.company.pk %}"><i class="icon-fixed-width icon-building"></i>Company</a></li>
         {% endif %}
         {% if user.pk %}
         <li><a href="{% url "new_ticket" %}"><i class="icon-fixed-width icon-plus"></i>New Ticket</a>

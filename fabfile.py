@@ -44,7 +44,7 @@ def update_database():
     """
     Update the database using syncdb and south
     """
-    run("python2.7 /home/jgraham32/webapps/handprints_app/handprints/manage.py syncdb")
+    run("python2.7 /home/jgraham32/webapps/handprints_app/handprints/manage.py syncdb --all")
     run("python2.7 /home/jgraham32/webapps/handprints_app/handprints/manage.py migrate --fake")
     run("python2.7 /home/jgraham32/webapps/handprints_app/handprints/manage.py migrate")
 
