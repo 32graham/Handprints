@@ -2,17 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView, DetailView
+from django.views.generic import ListView, TemplateView
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
-from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Company, TicketStatusChange
+from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved
 from .forms import EditTicketForm, StaffCommentForm, StandardCommentForm, NewTicketForm
-
-
-def staff_or_same_company(user, company):
-    return user.is_staff or company.pk == user.profile.company.pk
 
 
 class IndexView(TemplateView):
@@ -193,28 +189,4 @@ def new_ticket(request):
         {'form': form}
     )
 
-@login_required
-def company_detail(request, company_id):
-    company = get_object_or_404(Company, pk=company_id)
-    open_tickets = company.ticket_set.filter(status__name='Open')
-    # recently_closed_tickets = TicketStatusChange.objects \
-    #     .filter(ticket__company__pk=company.pk) \
-    #     .order_by('date_time')
 
-    recently_closed_tickets = company.ticket_set.filter(
-            status__name='Closed'
-        ).filter(
-            status_changes__new_status__name='Closed'
-        ).order_by(
-            '-status_changes__date_time'
-        )[:5]
-
-    return render(
-        request,
-        'tickets/company_detail.html',
-        {
-            'company': company,
-            'open_tickets': open_tickets,
-            'recently_closed_tickets': recently_closed_tickets,
-        }
-    )

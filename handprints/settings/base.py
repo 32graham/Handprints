@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'tickets',
     'profiles',
     'stats',
+    'companies',
 )
 
 # A sample logging configuration. The only tangible logging

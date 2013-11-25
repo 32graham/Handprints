@@ -12,6 +12,7 @@ urlpatterns = patterns(
     url(r'^$', IndexView.as_view(),  name='index'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tickets/', include('tickets.urls')),
+    url(r'^companies/', include('companies.urls')),
     url(r'^profiles/', include('profiles.urls')),
     url(r'^stats/', include('stats.urls')),
     url(r'^search/', login_required(basic_search)),
