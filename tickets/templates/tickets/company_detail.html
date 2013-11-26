@@ -1,11 +1,26 @@
 {% extends "base.html" %}
 
+{% block head %}
+
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static "tickets/handprints.js" %}"></script>
+    {{ ticket_form.media.js }}
+    {{ ticket_form.media.css }}
+
+{% endblock %}
+
 {% block content %}
 
 <div class="jumbotron">
     <div class="container">
         <h1><i class="icon-fixed-width icon-building"></i>{{company}}</h1>
     </div>
+</div>
+
+{% load crispy_forms_tags %}
+
+<div class="row">
+    {% crispy form %}
 </div>
 
 <div class="row">

@@ -171,7 +171,7 @@ def new_ticket(request):
     if request.method == 'POST':
         form = NewTicketForm(request.POST, {})
 
-        if(form.is_valid()):
+        if form.is_valid():
             ticket = form.save(commit=False)
             ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
             ticket.user_created = request.user
