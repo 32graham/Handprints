@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Company
@@ -18,11 +19,12 @@ def company_detail(request, company_id):
         )[:5]
 
     if request.method == 'POST':
-        form = CompanyForm(request.POST, {})
+        form = CompanyForm(request.POST, instance=company)
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect('/companies/' + str(company.pk) + '/')
     else:
-        form = CompanyForm()
+        form = CompanyForm(instance=company)
 
     return render(
         request,
