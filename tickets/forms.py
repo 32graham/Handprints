@@ -41,7 +41,7 @@ class EditTicketForm(forms.ModelForm):
                 'product',
                 'tier',
                 'status',
-                Field('assignees', css_class='col-sm-12'),
+                Field('assignees', css_class='col-xs-12'),
             ),
             ButtonHolder(
                 Submit('ticket_post', 'Save', css_class='btn-warning')

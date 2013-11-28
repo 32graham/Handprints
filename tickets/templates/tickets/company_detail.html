@@ -17,12 +17,6 @@
     </div>
 </div>
 
-{% load crispy_forms_tags %}
-
-<div class="row">
-    {% crispy form %}
-</div>
-
 <div class="row">
     <div class="col-sm-4">
         <h3>Users</h3>
@@ -50,6 +44,16 @@
         {% for ticket in recently_closed_tickets %}
             <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
         {% endfor %}
+    </div>
+</div>
+
+<hr class="featurette-divider">
+
+{% load crispy_forms_tags %}
+
+<div class="row">
+    <div class="col-sm-12">
+        {% crispy form %}
     </div>
 </div>
 

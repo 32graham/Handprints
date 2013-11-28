@@ -2,7 +2,7 @@ from django import forms
 from .models import Company
 from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Fieldset, Field
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Fieldset, Field, Div
 from django.core.urlresolvers import reverse
 
 
@@ -21,8 +21,8 @@ class CompanyForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 '',
+                Field('product_versions', css_class='col-xs-12'),
                 'notes',
-                Field('product_versions', css_class='col-sm-12'),
             ),
             ButtonHolder(
                 Submit('company_post', 'Save', css_class='btn-warning')
