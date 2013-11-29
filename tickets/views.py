@@ -181,7 +181,11 @@ def new_ticket(request):
             call_command("update_index")
             return HttpResponseRedirect('/tickets/status/1/')
     else:
-        form = NewTicketForm()
+        form = NewTicketForm(initial={
+            'status': 1,
+            'tier': 1,
+            'product': 1,
+        })
 
     return render(
         request,
