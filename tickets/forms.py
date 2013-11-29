@@ -1,5 +1,5 @@
 from .models import TicketComment, Ticket, Product
-from django.contrib.auth.models import User
+from profiles.models import Profile
 from django import forms
 from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
@@ -48,7 +48,7 @@ class EditTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['assignees'].queryset = User.objects.filter(is_staff=True)
+        self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True)
 
 
 class NewTicketForm(forms.ModelForm):
@@ -90,3 +90,4 @@ class NewTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
+        self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True)

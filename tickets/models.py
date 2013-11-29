@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from companies.models import Product, Company
+from profiles.models import Profile
 
 
 class Status(models.Model):
@@ -31,12 +31,12 @@ class Ticket(models.Model):
     description = models.TextField()
     company = models.ForeignKey(Company)
     created_date_time = models.DateTimeField()
-    user_created = models.ForeignKey(User, related_name='created_tickets')
+    profile_created = models.ForeignKey(Profile, related_name='created_tickets')
     tier = models.ForeignKey(Tier)
     status = models.ForeignKey(Status)
-    assignees = models.ManyToManyField(User, blank=True, related_name='assignments')
+    assignees = models.ManyToManyField(Profile, blank=True, related_name='assignments')
     product = models.ForeignKey(Product, blank=True, null=True)
-    user_changed = models.ForeignKey(User, related_name='+')
+    profile_changed = models.ForeignKey(Profile, related_name='+')
 
     def __unicode__(self):
         return self.title
@@ -50,10 +50,10 @@ class TicketTierChange(models.Model):
     date_time = models.DateTimeField()
     new_tier = models.ForeignKey(Tier, related_name='+')
     old_tier = models.ForeignKey(Tier, related_name='+')
-    user = models.ForeignKey(User)
+    profile = models.ForeignKey(Profile)
 
     def __unicode__(self):
-        return self.user.get_full_name() + ' ' + self.new_tier.__unicode__()
+        return self.profile.user.get_full_name() + ' ' + self.new_tier.__unicode__()
 
     class Meta:
       get_latest_by = 'date_time'
@@ -64,10 +64,10 @@ class TicketStatusChange(models.Model):
     date_time = models.DateTimeField()
     new_status = models.ForeignKey(Status, related_name='+')
     old_status = models.ForeignKey(Status, related_name='+')
-    user = models.ForeignKey(User)
+    profile = models.ForeignKey(Profile)
 
     def __unicode__(self):
-        return self.user.get_full_name() + ' ' + self.new_status.name
+        return self.profile.user.get_full_name() + ' ' + self.new_status.name
 
     class Meta:
       get_latest_by = 'date_time'
@@ -77,7 +77,7 @@ class TicketComment(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='comments')
     date_time = models.DateTimeField()
     comment = models.TextField()
-    user = models.ForeignKey(User)
+    profile = models.ForeignKey(Profile)
     attachment = models.FileField(upload_to='attachment', null=True, blank=True)
     is_public = models.BooleanField()
 
@@ -88,7 +88,7 @@ class TicketComment(models.Model):
 class TicketAssigneeChangeSet(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='assignee_changes')
     date_time = models.DateTimeField()
-    user = models.ForeignKey(User, related_name='+')
+    profile = models.ForeignKey(Profile, related_name='+')
 
     def __unicode__(self):
         added = ", ".join(str(assignee) for assignee in self.added_assignees.all())
@@ -106,15 +106,15 @@ class TicketAssigneeChangeSet(models.Model):
 
 class TicketAssigneeAdded(models.Model):
     change_set = models.ForeignKey(TicketAssigneeChangeSet, related_name='added_assignees')
-    assignee = models.ForeignKey(User)
+    assignee = models.ForeignKey(Profile)
 
     def __unicode__(self):
-        return self.assignee.get_full_name()
+        return self.assignee.user.get_full_name()
 
 
 class TicketAssigneeRemoved(models.Model):
     change_set = models.ForeignKey(TicketAssigneeChangeSet, related_name='removed_assignees')
-    assignee = models.ForeignKey(User)
+    assignee = models.ForeignKey(Profile)
 
     def __unicode__(self):
-        return self.assignee.get_full_name()
+        return self.assignee.user.get_full_name()

@@ -2,7 +2,7 @@ from django import forms
 from .models import Company
 from django_select2.widgets import Select2MultipleWidget
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Fieldset, Field, Div
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Fieldset, Field
 from django.core.urlresolvers import reverse
 
 

@@ -8,5 +8,4 @@ class Profile(models.Model):
     company = models.ForeignKey(Company)
 
     def __unicode__(self):
-        items = (str(self.user), str(self.company))
-        return ' - '.join(items)
+        return self.user.get_full_name()

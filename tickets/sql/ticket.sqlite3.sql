@@ -11,7 +11,7 @@ BEGIN
         date_time,
         new_tier_id,
         old_tier_id,
-        user_id
+        profile_id
     )
     VALUES
     (
@@ -19,7 +19,7 @@ BEGIN
         datetime('now'),
         new.tier_id,
         old.tier_id,
-        new.user_changed_id
+        new.profile_changed_id
     );
 END;
 
@@ -33,7 +33,7 @@ BEGIN
         date_time,
         new_status_id,
         old_status_id,
-        user_id
+        profile_id
     )
     VALUES
     (
@@ -41,6 +41,6 @@ BEGIN
         datetime('now'),
         new.status_id,
         old.status_id,
-        new.user_changed_id
+        new.profile_changed_id
     );
 END;

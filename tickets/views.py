@@ -73,7 +73,7 @@ def standard_ticket(request, ticket_id):
     events = get_events(request, ticket)
 
     if request.method == 'POST':
-        ticket.user_changed = request.user
+        ticket.profile_changed = request.user.profile
         commentForm = StandardCommentForm(request.POST, request.FILES)
         if commentForm.is_valid():
             return handle_comment_post(request, commentForm, ticket)
@@ -97,13 +97,13 @@ def staff_ticket(request, ticket_id):
     events = get_events(request, ticket)
 
     if request.method == 'POST' and 'ticket_post' in request.POST:
-        ticket.user_changed = request.user
+        ticket.profile_changed = request.user.profile
         ticketForm = EditTicketForm(request.POST, instance=ticket)
         commentForm = StaffCommentForm()
         if ticketForm.is_valid():
             return handle_ticket_post(ticketForm)
     elif request.method == 'POST' and 'comment_post' in request.POST:
-        ticket.user_changed = request.user
+        ticket.profile_changed = request.user.profile
         commentForm = StaffCommentForm(request.POST, request.FILES)
         ticketForm = EditTicketForm(instance=ticket)
         if commentForm.is_valid():
@@ -140,7 +140,7 @@ def handle_ticket_post(ticketForm):
         change_set = TicketAssigneeChangeSet.objects.create(
             ticket=model,
             date_time=date_time,
-            user=model.user_changed)
+            profile=model.profile_changed)
 
         for added in added:
             TicketAssigneeAdded.objects.create(change_set=change_set, assignee=added)
@@ -157,7 +157,7 @@ def handle_comment_post(request, commentForm, ticket):
     comment = commentForm.save(commit=False)
     comment.date_time = datetime.now()
     comment.ticket = ticket
-    comment.user = request.user
+    comment.profile = request.user.profile
 
     if not request.user.is_staff:
         comment.is_public = True
@@ -174,8 +174,8 @@ def new_ticket(request):
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
-            ticket.user_created = request.user
-            ticket.user_changed = request.user
+            ticket.profile_created = request.user.profile
+            ticket.profile_changed = request.user.profile
             ticket.save()
             form.save_m2m()
             call_command("update_index")
