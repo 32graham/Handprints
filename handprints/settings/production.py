@@ -20,7 +20,7 @@ ALLOWED_HOSTS = ['handprints.jgraham32.webfactional.com']
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/jgraham32/media/' #'/home/josh/dev/media/'
+MEDIA_ROOT = '/home/jgraham32/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files

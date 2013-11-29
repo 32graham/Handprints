@@ -73,12 +73,16 @@ class TicketStatusChange(models.Model):
       get_latest_by = 'date_time'
 
 
+def get_attachment_directory(self, filename):
+    return "attachments/%s/%s" % (str(self.ticket.pk), filename)
+
+
 class TicketComment(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='comments')
     date_time = models.DateTimeField()
     comment = models.TextField()
     profile = models.ForeignKey(Profile)
-    attachment = models.FileField(upload_to='attachment', null=True, blank=True)
+    attachment = models.FileField(upload_to=get_attachment_directory, null=True, blank=True)
     is_public = models.BooleanField()
 
     def __unicode__(self):
