@@ -14,11 +14,14 @@
 {% load chartkick %}
 
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-md-6">
         {% bar_chart company_vs_ticket_count %}
     </div>
-    <div class="col-sm-6">
+    <div class="col-md-6">
         {% column_chart tier_vs_ticket_count %}
+    </div>
+    <div class="col-md-6">
+        {% column_chart count_vs_day %}
     </div>
 </div>
 
