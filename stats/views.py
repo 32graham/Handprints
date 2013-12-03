@@ -38,14 +38,14 @@ def get_tier_vs_ticket_count():
 
 
 def get_creations_by_day():
-    items = Ticket.objects \
+    items1 = Ticket.objects \
         .filter(
             created_date_time__lte=datetime.today(),
             created_date_time__gt=datetime.today()- timedelta(days=30)
         )
 
     time_vs_created_count = {}
-    for time, tickets in groupby(items, lambda x: x.created_date_time.day):
+    for time, tickets in groupby(items1, lambda x: x.created_date_time.date()):
         for ticket in tickets:
             if str(time) in time_vs_created_count:
                 time_vs_created_count[str(time)] += 1

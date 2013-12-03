@@ -14,14 +14,14 @@
 {% load chartkick %}
 
 <div class="row">
-    <div class="col-md-6">
-        {% bar_chart company_vs_ticket_count %}
+    <div class="md-pad col-md-6">
+        {% bar_chart company_vs_ticket_count with library={"title":{"text":"Company vs Ticket Count"},"yAxis":{"title":{"text":"Ticket Count"}}} %}
     </div>
-    <div class="col-md-6">
-        {% column_chart tier_vs_ticket_count %}
+    <div class="md-pad col-md-6">
+        {% column_chart tier_vs_ticket_count with library={"title":{"text":"Tier vs Ticket Count"},"yAxis":{"title":{"text":"Ticket Count"}}} %}
     </div>
-    <div class="col-md-6">
-        {% column_chart count_vs_day %}
+    <div class="md-pad col-md-6">
+        {% line_chart count_vs_day  with library={"title":{"text":"Ticket Creation Over Time"},"yAxis":{"title":{"text":"Ticket Count"}},"xAxis":{"title":{"text":"Date"}}} %}
     </div>
 </div>
 
