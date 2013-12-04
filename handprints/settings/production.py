@@ -16,7 +16,10 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['handprints.jgraham32.webfactional.com']
+ALLOWED_HOSTS = [
+    'handprints.jgraham32.webfactional.com',
+    'demo.joshgraham.com',
+]
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
