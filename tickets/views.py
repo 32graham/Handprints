@@ -7,7 +7,8 @@ from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
-from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved
+from companies.models import Company
+from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Tier, Department, Status
 from .forms import EditTicketForm, StaffCommentForm, StandardCommentForm, NewTicketForm
 
 
@@ -194,3 +195,20 @@ def new_ticket(request):
     )
 
 
+@login_required
+def pages(request):
+    tiers = Tier.objects.all()
+    departments = Department.objects.all()
+    statuses = Status.objects.all()
+    companies = Company.objects.all()
+
+    return render(
+        request,
+        'pages.html',
+        {
+            'tiers': tiers,
+            'departments': departments,
+            'statuses': statuses,
+            'companies': companies,
+        }
+    )

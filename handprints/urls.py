@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import admin
 from haystack.views import basic_search
 from tickets.views import IndexView
+from tickets import views as ticket_views
 from django.conf import settings
 
 admin.autodiscover()
@@ -21,4 +22,5 @@ urlpatterns = patterns(
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='auth_login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/tickets/'}, name='auth_logout'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^pages/$', ticket_views.pages, name='pages'),
 )

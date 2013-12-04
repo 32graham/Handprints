@@ -10,12 +10,18 @@ class Status(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('status', args=[str(self.pk)])
+
 
 class Department(models.Model):
     name = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('department', args=[str(self.pk)])
 
 
 class Tier(models.Model):
@@ -24,6 +30,9 @@ class Tier(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('tier', args=[str(self.pk)])
 
 
 class Ticket(models.Model):

@@ -135,4 +135,4 @@ LOGGING = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
-LOGIN_REDIRECT_URL = '/tickets/status/1/'
+LOGIN_REDIRECT_URL = '/'

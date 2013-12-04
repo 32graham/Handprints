@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 
 
@@ -20,6 +21,9 @@ class ProductVersion(models.Model):
             str(self.major),
             str(self.minor)))
 
+    def get_absolute_url(self):
+        return reverse('company', args=[str(self.pk)])
+
 
 class Company(models.Model):
     name = models.CharField(max_length=50)
@@ -31,3 +35,6 @@ class Company(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('company', args=[str(self.pk)])

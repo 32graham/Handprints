@@ -12,22 +12,15 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h1>Assigned Issues</h1>
 
         <ul>
-
-        {% for ticket in user.assignments.all %}
-
-        <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
-
-        {% endfor %}
-
+            {% for ticket in user.profile.assignments.all %}
+                <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
+            {% endfor %}
         </ul>
 
-    </div>
-    <div class="col-md-6">
-        <h1>Stats</h1>
     </div>
 </div>
 {% endblock %}
