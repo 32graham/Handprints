@@ -7,9 +7,10 @@ from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
+from django.core.urlresolvers import reverse
 from companies.models import Company
 from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Tier, Department, Status
-from .forms import EditTicketForm, StaffCommentForm, StandardCommentForm, NewTicketForm
+from .forms import EditTicketForm, StaffCommentForm, StandardCommentForm, StandardNewTicketForm, StaffNewTicketForm
 
 
 class IndexView(TemplateView):
@@ -150,7 +151,7 @@ def handle_ticket_post(ticketForm):
             TicketAssigneeRemoved.objects.create(change_set=change_set, assignee=removed)
 
     call_command("update_index")
-    return HttpResponseRedirect('/tickets/' + str(model.pk) + '/')
+    return HttpResponseRedirect(reverse('ticket', args=(str(model.pk),)))
 
 
 @login_required
@@ -164,13 +165,21 @@ def handle_comment_post(request, commentForm, ticket):
         comment.is_public = True
 
     comment.save()
-    return HttpResponseRedirect('/tickets/' + str(ticket.pk) + '/')
+    return HttpResponseRedirect(reverse('ticket', args=(str(ticket.pk),)))
 
 
 @login_required
 def new_ticket(request):
+    if request.user.is_staff:
+        return staff_new_ticket(request)
+    else:
+        return standard_new_ticket(request)
+
+
+@login_required
+def staff_new_ticket(request):
     if request.method == 'POST':
-        form = NewTicketForm(request.POST, {})
+        form = StaffNewTicketForm(request.POST, {})
 
         if form.is_valid():
             ticket = form.save(commit=False)
@@ -180,11 +189,40 @@ def new_ticket(request):
             ticket.save()
             form.save_m2m()
             call_command("update_index")
-            return HttpResponseRedirect('/tickets/status/1/')
+            return HttpResponseRedirect(reverse('status', args=('1',)))
     else:
-        form = NewTicketForm(initial={
+        form = StaffNewTicketForm(initial={
             'status': 1,
             'tier': 1,
+            'product': 1,
+        })
+
+    return render(
+        request,
+        'tickets/new_ticket.html',
+        {'form': form}
+    )
+
+
+@login_required
+def standard_new_ticket(request):
+    if request.method == 'POST':
+        form = StandardNewTicketForm(request.POST, {})
+
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.created_date_time = datetime.utcnow().replace(tzinfo=utc)
+            ticket.profile_created = request.user.profile
+            ticket.profile_changed = request.user.profile
+            ticket.company = request.user.profile.company
+            ticket.tier = Tier.objects.get(name='Tier 1')
+            ticket.status = Status.objects.get(name='Open')
+            ticket.save()
+            form.save_m2m()
+            call_command("update_index")
+            return HttpResponseRedirect(reverse('company', args=(str(request.user.profile.company.pk),)))
+    else:
+        form = StandardNewTicketForm(initial={
             'product': 1,
         })
 

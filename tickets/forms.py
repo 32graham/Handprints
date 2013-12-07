@@ -51,7 +51,7 @@ class EditTicketForm(forms.ModelForm):
         self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True)
 
 
-class NewTicketForm(forms.ModelForm):
+class StaffNewTicketForm(forms.ModelForm):
 
     product = forms.ModelChoiceField(queryset=Product.objects.order_by('name'), required=False)
 
@@ -71,7 +71,7 @@ class NewTicketForm(forms.ModelForm):
         model = Ticket
 
     def __init__(self, *args, **kwargs):
-        super(NewTicketForm, self).__init__(*args, **kwargs)
+        super(StaffNewTicketForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_action = reverse('new_ticket')
         self.helper.layout = Layout(
@@ -91,3 +91,35 @@ class NewTicketForm(forms.ModelForm):
         )
         self.fields['assignees'].help_text = ''
         self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True)
+
+
+class StandardNewTicketForm(forms.ModelForm):
+
+    product = forms.ModelChoiceField(queryset=Product.objects.order_by('name'), required=False)
+
+    class Meta:
+        widgets = {
+            'assignees': Select2MultipleWidget(select2_options={'closeOnSelect': True})
+        }
+        fields = [
+            'title',
+            'description',
+            'product',
+        ]
+        model = Ticket
+
+    def __init__(self, *args, **kwargs):
+        super(StandardNewTicketForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_action = reverse('new_ticket')
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'title',
+                'description',
+                'product',
+            ),
+            ButtonHolder(
+                Submit('new_ticket', 'Save', css_class='btn-primary')
+            )
+        )
