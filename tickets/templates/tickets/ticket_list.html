@@ -2,19 +2,21 @@
 
 {% block content %}
 
-<h2>Tickets</h2>
+<h2>{{ description }}</h2>
 
     <table class="table table-striped">
         <tr>
             <th>Title</th>
             <th>Company</th>
             <th>Tier</th>
+            <th>Assignees</th>
         </tr>
         {% for ticket in tickets %}
         <tr {% if ticket.is_blocker %} class="danger" {% endif %}>
             <td><a href="{% url "ticket" ticket.pk %}">{{ticket.title}}</a></td>
             <td><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></td>
             <td><a href="{% url "tier" ticket.tier_id %}">{{ticket.tier}}</a></td>
+            <td>{{ ticket.assignees.all|join:", " }}<td>
         </tr>
         {% endfor %}
     </table>

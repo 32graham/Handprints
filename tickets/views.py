@@ -38,6 +38,19 @@ class TicketList(ListView):
     def dispatch(self, *args, **kwargs):
         return super(TicketList, self).dispatch(*args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(TicketList, self).get_context_data(**kwargs)
+        if 'tier_id' in self.kwargs:
+            name = 'Tier : ' + Tier.objects.get(pk=self.kwargs['tier_id']).name
+        if 'status_id' in self.kwargs:
+            name = 'Status : ' + Status.objects.get(pk=self.kwargs['status_id']).name
+        if 'company_id' in self.kwargs:
+            name = 'Company : ' + Company.objects.get(pk=self.kwargs['company_id']).name
+        if 'department_id' in self.kwargs:
+            name = 'Department : ' + Department.objects.get(pk=self.kwargs['department_id']).name
+        context['description'] = name
+        return context
+
 
 def get_events(request, ticket):
 
