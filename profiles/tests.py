@@ -1,12 +1,16 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from companies.models import Company
+from .models import Profile
 
 
 class TicketsViewsTestCase(TestCase):
 
     def setUp(self):
-        User.objects.create_user(username='username', password='password')
+        user = User.objects.create_user(username='username', password='password')
+        company = Company.objects.create(name='company')
+        Profile.objects.create(company=company, user=user)
 
 
     def test_profile(self):
