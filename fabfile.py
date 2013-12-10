@@ -103,7 +103,7 @@ def deploy():
         webserver_stop()
 
     push_sources()
-    install_dependencies()
+    #install_dependencies()
     update_database()
     build_static()
 
