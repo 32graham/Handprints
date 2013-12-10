@@ -6,6 +6,7 @@ argparse==1.2.1
 chartkick==0.4.0
 distribute==0.6.34
 django-crispy-forms==1.4.0
+django-filter==0.7
 django-haystack==2.1.0
 psycopg2==2.5.1
 wsgiref==0.1.2

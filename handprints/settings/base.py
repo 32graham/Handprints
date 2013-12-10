@@ -101,7 +101,6 @@ INSTALLED_APPS = (
     'south',
     'django_select2',
     'django_filters',
-    'pagination',
     'tickets',
     'profiles',
     'stats',
