@@ -71,30 +71,6 @@ class TicketsViewsTestCase(TestCase):
         self.assertEqual(resp.status_code, 302)
 
 
-    def test_status(self):
-        self.client.login(username='username', password='password')
-        resp = self.client.get(reverse('status', args=[1]))
-        self.assertEqual(resp.status_code, 200)
-        self.assertIn('status', resp.content)
-
-
-    def test_status_access_denied_without_login(self):
-        resp = self.client.get(reverse('status', args=[1]))
-        self.assertEqual(resp.status_code, 302)
-
-
-    def test_tier(self):
-        self.client.login(username='username', password='password')
-        resp = self.client.get(reverse('tier', args=[1]))
-        self.assertEqual(resp.status_code, 200)
-        self.assertIn('tier', resp.content)
-
-
-    def test_tier_access_denied_without_login(self):
-        resp = self.client.get(reverse('tier', args=[1]))
-        self.assertEqual(resp.status_code, 302)
-
-
     def test_company(self):
         self.client.login(username='username', password='password')
         resp = self.client.get(reverse('company', args=[1]))

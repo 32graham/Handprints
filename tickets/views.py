@@ -1,55 +1,20 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.utils.decorators import method_decorator
-from django.views.generic import ListView, TemplateView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.utils.timezone import utc
 from django.core.management import call_command
 from django.core.urlresolvers import reverse
-from companies.models import Company
-from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Tier, Department, Status
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Tier, Status
 from .forms import EditTicketForm, StaffCommentForm, StandardCommentForm, StandardNewTicketForm, StaffNewTicketForm
+from .filters import TicketFilter
 
 
 class IndexView(TemplateView):
     template_name = 'index.html'
-
-
-class TicketList(ListView):
-    model = Ticket
-    context_object_name = 'tickets'
-    paginate_by = 15
-
-    def get_queryset(self):
-        queryset = Ticket.objects.all()
-        if 'tier_id' in self.kwargs:
-            queryset = queryset.filter(tier__pk=self.kwargs['tier_id'])
-        if 'status_id' in self.kwargs:
-            queryset = queryset.filter(status__pk=self.kwargs['status_id'])
-        if 'company_id' in self.kwargs:
-            queryset = queryset.filter(company__pk=self.kwargs['company_id'])
-        if 'department_id' in self.kwargs:
-            queryset = queryset.filter(tier__department__pk=self.kwargs['department_id'])
-        return queryset
-
-    @method_decorator(user_passes_test(lambda u: u.is_staff))
-    def dispatch(self, *args, **kwargs):
-        return super(TicketList, self).dispatch(*args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(TicketList, self).get_context_data(**kwargs)
-        if 'tier_id' in self.kwargs:
-            name = 'Tier : ' + Tier.objects.get(pk=self.kwargs['tier_id']).name
-        if 'status_id' in self.kwargs:
-            name = 'Status : ' + Status.objects.get(pk=self.kwargs['status_id']).name
-        if 'company_id' in self.kwargs:
-            name = 'Company : ' + Company.objects.get(pk=self.kwargs['company_id']).name
-        if 'department_id' in self.kwargs:
-            name = 'Department : ' + Department.objects.get(pk=self.kwargs['department_id']).name
-        context['description'] = name
-        return context
 
 
 def get_events(request, ticket):
@@ -202,7 +167,7 @@ def staff_new_ticket(request):
             ticket.save()
             form.save_m2m()
             call_command("update_index")
-            return HttpResponseRedirect(reverse('status', args=('1',)))
+            return HttpResponseRedirect(reverse('tickets'))
     else:
         form = StaffNewTicketForm(initial={
             'status': 1,
@@ -247,19 +212,27 @@ def standard_new_ticket(request):
 
 
 @login_required
-def pages(request):
-    tiers = Tier.objects.all()
-    departments = Department.objects.all()
-    statuses = Status.objects.all()
-    companies = Company.objects.all()
+def ticket_list(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    f = TicketFilter(request.GET, queryset=Ticket.objects.all())
+    paginator = Paginator(f.qs, 10)
+
+    page = request.GET.get('page')
+    try:
+        obj_list = paginator.page(page)
+    except PageNotAnInteger:
+        obj_list = paginator.page(1)
+    except EmptyPage:
+        obj_list = paginator.page(paginator.num_pages)
 
     return render(
         request,
-        'pages.html',
+        'tickets/filtered_ticket_list.html',
         {
-            'tiers': tiers,
-            'departments': departments,
-            'statuses': statuses,
-            'companies': companies,
+            'filter': f,
+            'object_list': obj_list,
+            'request': request
         }
     )

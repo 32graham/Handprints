@@ -1,12 +1,13 @@
 from django.conf.urls import patterns, url
 from tickets import views
-from .views import TicketList, IndexView
+#from .views import TicketFilterView
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
 
 urlpatterns = patterns('',
-    url(r'^$',                                   IndexView.as_view()),
-    url(r'^status/(?P<status_id>\w+)/$',         TicketList.as_view(), name='status'),
-    url(r'^tier/(?P<tier_id>\w+)/$',             TicketList.as_view(), name='tier'),
-    url(r'^department/(?P<department_id>\w+)/$', TicketList.as_view(), name='department'),
-    url(r'^(?P<ticket_id>\d+)/$',                views.ticket,         name='ticket'),
-    url(r'^newticket/$',                         views.new_ticket,     name='new_ticket'),
+    url(r'^(?P<ticket_id>\d+)/$', views.ticket,      name='ticket'),
+    url(r'^newticket/$',          views.new_ticket,  name='new_ticket'),
+    url(r'^$',                    views.ticket_list, name='tickets'),
 )

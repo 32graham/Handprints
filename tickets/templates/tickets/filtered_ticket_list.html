@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load ticket_extras %}
+
+{%  crispy filter.form %}
+
+<hr class="featurette-divider">
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Company</th>
+                <th>Assignees</th>
+                <th>Tier</th>
+            </tr>
+            {% for obj in object_list %}
+                <tr {% if ticket.is_blocker %} class="danger" {% endif %}>
+                    <td><a href="{% url "ticket" obj.pk %}">{{obj.title}}</a></td>
+                    <td><a href="{% url "company" obj.company.pk %}">{{obj.company}}</a></td>
+                    <td>{{obj.assignees.all|join:", "}}</td>
+                    <td>{{obj.tier}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<ul class="pager">
+    {% if object_list.has_previous %}
+        <li><a href="?{% url_replace request 'page' object_list.previous_page_number %}"><i class="icon-arrow-left "></i> Previous</a></li>
+    {% endif %}
+
+    <li class="text-muted" style="margin:30px;">
+        Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
+    </li>
+
+    {% if object_list.has_next %}
+        <li><a href="?{% url_replace request 'page' object_list.next_page_number %}">Next <i class="icon-arrow-right"></i></a></li>
+    {% endif %}
+</ul>
+
+{% endblock %}
