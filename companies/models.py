@@ -27,7 +27,7 @@ class ProductVersion(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=50)
-    notes = models.TextField(blank=True)
+    notes = models.TextField(blank=True, null=True)
     product_versions = models.ManyToManyField(
         ProductVersion,
         blank=True,
