@@ -128,7 +128,6 @@ def handle_ticket_post(ticketForm):
         for removed in removed:
             TicketAssigneeRemoved.objects.create(change_set=change_set, assignee=removed)
 
-    call_command("update_index")
     return HttpResponseRedirect(reverse('ticket', args=(str(model.pk),)))
 
 
@@ -166,7 +165,6 @@ def staff_new_ticket(request):
             ticket.profile_changed = request.user.profile
             ticket.save()
             form.save_m2m()
-            call_command("update_index")
             return HttpResponseRedirect(reverse('tickets'))
     else:
         form = StaffNewTicketForm(initial={
@@ -197,7 +195,6 @@ def standard_new_ticket(request):
             ticket.status = Status.objects.get(name='Open')
             ticket.save()
             form.save_m2m()
-            call_command("update_index")
             return HttpResponseRedirect(reverse('company', args=(str(request.user.profile.company.pk),)))
     else:
         form = StandardNewTicketForm(initial={
