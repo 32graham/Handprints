@@ -18,7 +18,7 @@ def overall(request):
 
 
 def get_company_vs_ticket_count():
-    companies = Company.objects.annotate(num_tickets=Count('ticket')).order_by('-num_tickets')[:1]
+    companies = Company.objects.annotate(num_tickets=Count('ticket')).order_by('-num_tickets')[:10]
 
     company_vs_ticket_count = {}
     for company in companies:
