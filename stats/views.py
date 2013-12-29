@@ -18,7 +18,7 @@ def overall(request):
 
 
 def get_company_vs_ticket_count():
-    companies = Company.objects.annotate(num_tickets=Count('ticket'))
+    companies = Company.objects.annotate(num_tickets=Count('ticket')).order_by('-num_tickets')[:1]
 
     company_vs_ticket_count = {}
     for company in companies:
@@ -28,7 +28,9 @@ def get_company_vs_ticket_count():
 
 
 def get_tier_vs_ticket_count():
-    tiers = Tier.objects.annotate(num_tickets=Count('ticket'))
+    tiers = Tier.objects \
+        .filter(ticket__status__name='Open') \
+        .annotate(num_tickets=Count('ticket'))
 
     tier_vs_ticket_count = {}
     for tier in tiers:
