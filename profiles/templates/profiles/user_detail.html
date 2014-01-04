@@ -11,16 +11,16 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <h1>Assigned Issues</h1>
+<a href="{% url "password_reset" %}">Change Password</a>
 
+<div class="row">
+    <div class="col-sm-8">
+        <h1>Assigned Issues</h1>
         <ul>
             {% for ticket in user.profile.assignments.all %}
                 <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
             {% endfor %}
         </ul>
-
     </div>
 </div>
 {% endblock %}

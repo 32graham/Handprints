@@ -21,4 +21,6 @@ urlpatterns = patterns(
     url(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='auth_login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='auth_logout'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'profiles.views.reset_confirm', name='password_reset_confirm'),
+    url(r'^reset/$', 'profiles.views.reset', name='password_reset'),
 )

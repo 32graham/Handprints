@@ -14,10 +14,19 @@
 {% load crispy_forms_tags %}
 {{ form|crispy }}
 
-<input class="btn btn-primary" type="submit" value="Login" />
-<input type="hidden" name="next" value="{{ next }}" />
+<div class="row">
+    <div class="col-sm-6">
+        <input class="btn btn-primary" type="submit" value="Login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </div>
+    <div class="col-sm-6 text-right">
+        <a href="{% url "password_reset" %}">Forgot Password?</a>
+    </div>
+</div>
 
 </form>
+
+
 
 </div>
 
