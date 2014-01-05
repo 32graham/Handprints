@@ -6,17 +6,19 @@
 
     <table class="table table-striped">
         <tr>
+            <th class="text-right">ID</th>
             <th>Title</th>
             <th>Company</th>
             <th>Tier</th>
-            <th>Assignees</th>
+            <th class="text-right">Assignees</th>
         </tr>
         {% for ticket in tickets %}
         <tr {% if ticket.is_blocker %} class="danger" {% endif %}>
+            <td class="text-right"><a href="{% url "ticket" result.object.pk %}">{{result.object.pk}}</a></td>
             <td><a href="{% url "ticket" ticket.pk %}">{{ticket.title}}</a></td>
             <td><a href="{% url "company" ticket.company_id %}">{{ticket.company}}</a></td>
-            <td><a href="{% url "tier" ticket.tier_id %}">{{ticket.tier}}</a></td>
-            <td>{{ ticket.assignees.all|join:", " }}<td>
+            <td>{{ticket.tier}}</td>
+            <td class="text-right">{{ ticket.assignees.all|join:", " }}<td>
         </tr>
         {% endfor %}
     </table>
