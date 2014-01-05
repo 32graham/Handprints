@@ -1,3 +1,5 @@
+{{ object.pk }}
 {{ object.title }}
 {{ object.description }}
+{{ object.company.name }}
 {{ object.comments.all }}
