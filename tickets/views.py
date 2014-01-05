@@ -5,7 +5,6 @@ from django.views.generic import TemplateView
 from django.core.exceptions import PermissionDenied
 from datetime import datetime
 from django.utils.timezone import utc
-from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Ticket, TicketAssigneeChangeSet, TicketAssigneeAdded, TicketAssigneeRemoved, Tier, Status
@@ -214,7 +213,7 @@ def ticket_list(request):
         raise PermissionDenied
 
     f = TicketFilter(request.GET, queryset=Ticket.objects.all())
-    paginator = Paginator(f.qs, 10)
+    paginator = Paginator(f.qs, 50)
 
     page = request.GET.get('page')
     try:
