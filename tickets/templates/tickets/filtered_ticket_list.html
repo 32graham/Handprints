@@ -24,7 +24,12 @@
                     <td><a href="{% url "ticket" obj.pk %}">{{obj.title}}</a></td>
                     <td><a href="{% url "company" obj.company.pk %}">{{obj.company}}</a></td>
                     <td>{{obj.tier}}</td>
-                    <td class="text-right">{{obj.assignees.all|join:", "}}</td>
+                    <td class="text-right">
+                        {% for profile in obj.assignees.all %}
+                            {% if not forloop.first %},{% endif %}
+                            <a href="{% url "profile" profile.pk %}">{{profile}}</a>
+                        {% endfor %}
+                    </td>
                 </tr>
             {% endfor %}
         </table>

@@ -39,7 +39,12 @@
                             <td><a href="{% url "ticket" result.object.pk %}">{{result.object.title}}</a></td>
                             <td><a href="{% url "company" result.object.company.pk %}">{{result.object.company}}</a></td>
                             <td>{{result.object.tier}}</td>
-                            <td class="text-right">{{result.object.assignees.all|join:", "}}</td>
+                            <td class="text-right">
+                                {% for profile in result.object.assignees.all %}
+                                    {% if not forloop.first %},{% endif %}
+                                    <a href="{% url "profile" profile.pk %}">{{profile}}</a>
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>
