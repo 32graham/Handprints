@@ -6,7 +6,7 @@
     <div class="container">
         <h1>
             <i class="icon-user"></i>
-            {{user.get_full_name}}
+            {{profile.user.get_full_name}}
         </h1>
     </div>
 </div>
@@ -17,7 +17,7 @@
     <div class="col-sm-8">
         <h1>Assigned Issues</h1>
         <ul>
-            {% for ticket in user.profile.assignments.all %}
+            {% for ticket in profile.assignments.all %}
                 <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
             {% endfor %}
         </ul>

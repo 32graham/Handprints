@@ -1,12 +1,12 @@
-from django.contrib.auth.models import User
+from .models import Profile
 from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
 
 
 class ProfileDetailView(DetailView):
-    model = User
-    context_object_name = 'user'
+    model = Profile
+    context_object_name = 'profile'
     template_name = 'profiles/user_detail.html'
 
 
