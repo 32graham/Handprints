@@ -17,7 +17,7 @@
     <div class="col-sm-8">
         <h1>Assigned Issues</h1>
         <ul>
-            {% for ticket in profile.assignments.all %}
+            {% for ticket in profile.open_assignments.all %}
                 <li><a href="{% url "ticket" ticket.pk %}">{{ticket}}</a></li>
             {% endfor %}
         </ul>

@@ -9,3 +9,6 @@ class Profile(models.Model):
 
     def __unicode__(self):
         return self.user.get_full_name()
+
+    def open_assignments(self):
+        return self.assignments.filter(status__name='Open')
