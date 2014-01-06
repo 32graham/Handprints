@@ -28,8 +28,12 @@
                 <td>{{ticket.pk}}</td>
             </tr>
             <tr>
-                <td>Status</td>
-                <td>{{ticket.status}}</td>
+                <td>Date Created</td>
+                <td>{{ticket.created_date_time}}</td>
+            </tr>
+            <tr>
+                <td>Created By</td>
+                <td><a href="{{ ticket.profile_created.get_absolute_url }}">{{ticket.profile_created}}</a></td>
             </tr>
         </table>
     </div>
@@ -51,7 +55,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    {{event.profile}}
+                    <a class="text-info" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                     {% if not event.is_public %}(Private){% endif %}
                 </div>
                 <div class="col-sm-6 text-right text-muted">
@@ -85,7 +89,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    {{event.profile}}
+                    <a class="text-warning" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -110,7 +114,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    {{event.profile}}
+                    <a class="text-danger" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -135,7 +139,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    {{event.profile}}
+                    <a class="text-success" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                     (Private)
                 </div>
                 <div class="col-sm-6 text-right text-muted">

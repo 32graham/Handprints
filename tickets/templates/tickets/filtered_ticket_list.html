@@ -27,7 +27,7 @@
                     <td class="text-right">
                         {% for profile in obj.assignees.all %}
                             {% if not forloop.first %},{% endif %}
-                            <a href="{% url "profile" profile.pk %}">{{profile}}</a>
+                            <a href="{{ profile.get_absolute_url }}">{{profile}}</a>
                         {% endfor %}
                     </td>
                 </tr>
