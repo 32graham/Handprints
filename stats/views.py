@@ -45,7 +45,7 @@ def get_creations_by_day():
     items1 = Ticket.objects \
         .filter(
             created_date_time__lte=datetime.today(),
-            created_date_time__gt=datetime.today()- timedelta(days=30)
+            created_date_time__gt=datetime.today()- timedelta(years=1)
         )
 
     time_vs_created_count = {}
