@@ -49,7 +49,7 @@ def get_creations_by_day():
         )
 
     time_vs_created_count = {}
-    for time, tickets in groupby(items1, lambda x: x.created_date_time.date()):
+    for time, tickets in groupby(items1, lambda x: x.created_date_time.date().month):
         for ticket in tickets:
             if str(time) in time_vs_created_count:
                 time_vs_created_count[str(time)] += 1
