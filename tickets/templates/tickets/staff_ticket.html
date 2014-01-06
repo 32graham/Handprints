@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 
-{% block head %}
+{% block title %}
+    {{ticket.pk}} - {{ticket.title}}
+{% endblock title %}
 
+{% block head %}
     {% load staticfiles %}
     <script type="text/javascript" src="{% static "tickets/handprints.js" %}"></script>
     {{ ticket_form.media.js }}
     {{ ticket_form.media.css }}
 
-{% endblock %}
+{% endblock head %}
 
 {% block content %}
 
@@ -175,4 +178,4 @@
   </div>
 </div>
 
-{% endblock %}
+{% endblock content %}

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+    {{ticket.pk}} - {{ticket.title}}
+{% endblock title %}
+
 {% block head %}
 
     {% load staticfiles %}
