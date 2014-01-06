@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 
 
 class ProfileDetailView(DetailView):
@@ -11,8 +11,8 @@ class ProfileDetailView(DetailView):
     context_object_name = 'profile'
     template_name = 'profiles/user_detail.html'
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
         return super(ProfileDetailView, self).dispatch(*args, **kwargs)
 
 

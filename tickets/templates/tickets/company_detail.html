@@ -27,7 +27,11 @@
 
         <ul class="list-unstyled">
         {% for profile in company.profile_set.all %}
-            <li><a href="{% url "profile" profile.user.pk %}">{{profile.user.get_full_name}}</a></li>
+            {% if profile.user.is_staff %}
+                <li><a href="{% url "profile" profile.user.pk %}">{{profile}}</a></li>
+            {% else %}
+                <li>{{profile}}</li>
+            {% endif %}
         {% endfor %}
         <ul>
 
