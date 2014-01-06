@@ -12,7 +12,7 @@ class ProfileDetailView(DetailView):
     template_name = 'profiles/user_detail.html'
 
     @method_decorator(user_passes_test(lambda u: u.is_staff))
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self, *args, **kwargs):
         return super(ProfileDetailView, self).dispatch(*args, **kwargs)
 
 
