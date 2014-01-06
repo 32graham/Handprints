@@ -48,7 +48,7 @@ class EditTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True)
+        self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True, user__is_active=True)
 
 
 class StaffNewTicketForm(forms.ModelForm):
@@ -90,7 +90,7 @@ class StaffNewTicketForm(forms.ModelForm):
             )
         )
         self.fields['assignees'].help_text = ''
-        self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True)
+        self.fields['assignees'].queryset = Profile.objects.filter(user__is_staff=True, user__is_active=True)
 
 
 class StandardNewTicketForm(forms.ModelForm):
