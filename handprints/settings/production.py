@@ -34,10 +34,3 @@ STATIC_ROOT = '/home/jgraham32/webapps/handprints_static/'
 TEMPLATE_DIRS = (
     '/home/jgraham32/webapps/handprints_app/handprints/templates/',
 )
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': '/home/jgraham32/search/whoosh_index',
-    }
-}
