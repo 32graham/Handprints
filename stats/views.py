@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from tickets.models import Company, Tier, Ticket
 from django.db.models import Count
-from datetime import datetime, timedelta
 from itertools import groupby
 from django.contrib.auth.decorators import user_passes_test
 

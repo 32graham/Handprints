@@ -28,7 +28,7 @@ TEMPLATE_DIRS = (
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': '/home/josh/dev/search/whoosh_index',
-    }
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
+    },
 }
