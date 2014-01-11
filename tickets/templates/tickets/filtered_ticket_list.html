@@ -38,15 +38,15 @@
 
 <ul class="pager">
     {% if object_list.has_previous %}
-        <li><a href="?{% url_replace request 'page' object_list.previous_page_number %}"><i class="icon-arrow-left "></i> Previous</a></li>
+        <li><a href="?{% url_replace request 'page' object_list.previous_page_number %}"><i class="icon-arrow-left "></i><div class="hidden-xs"> Previous</div></a></li>
     {% endif %}
 
-    <li class="text-muted" style="margin:30px;">
+    <li class="text-muted" style="margin:10px;">
         Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}
     </li>
 
     {% if object_list.has_next %}
-        <li><a href="?{% url_replace request 'page' object_list.next_page_number %}">Next <i class="icon-arrow-right"></i></a></li>
+        <li><a href="?{% url_replace request 'page' object_list.next_page_number %}"><div class="hidden-xs">Next </div><i class="icon-arrow-right"></i></a></li>
     {% endif %}
 </ul>
 
