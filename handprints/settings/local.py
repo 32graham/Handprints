@@ -25,10 +25,3 @@ STATIC_ROOT = '/home/josh/dev/static/'
 TEMPLATE_DIRS = (
     '/home/josh/dev/handprints/templates/',
 )
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr',
-    },
-}
