@@ -4,14 +4,15 @@
     {{company}}
 {% endblock title %}
 
-{% block head %}
 
+{% block head %}
+    <script src="//codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     {% load staticfiles %}
     <script type="text/javascript" src="{% static "tickets/handprints.js" %}"></script>
     {{ ticket_form.media.js }}
     {{ ticket_form.media.css }}
-
-{% endblock %}
+{% endblock head %}
 
 {% block content %}
 
@@ -66,3 +67,5 @@
 </div>
 
 {% endblock %}
+
+{% block js %}{% endblock %}
