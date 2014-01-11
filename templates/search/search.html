@@ -32,17 +32,17 @@
                     <tr>
                         <th>ID</th>
                         <th>Title</th>
-                        <th>Company</th>
+                        <th class="hidden-xs">Company</th>
                         <th>Tier</th>
-                        <th class="text-right">Assignees</th>
+                        <th class="hidden-xs hidden-sm text-right">Assignees</th>
                     </tr>
                     {% for result in page.object_list %}
                         <tr {% if ticket.is_blocker %} class="danger" {% endif %}>
                             <td><a href="{% url "ticket" result.object.pk %}">{{result.object.pk}}</a></td>
                             <td><a href="{% url "ticket" result.object.pk %}">{{result.object.title}}</a></td>
-                            <td><a href="{% url "company" result.object.company.pk %}">{{result.object.company}}</a></td>
+                            <td class="hidden-xs"><a href="{% url "company" result.object.company.pk %}">{{result.object.company}}</a></td>
                             <td>{{result.object.tier}}</td>
-                            <td class="text-right">
+                            <td class="hidden-xs hidden-sm text-right">
                                 {% for profile in result.object.assignees.all %}
                                     {% if not forloop.first %},{% endif %}
                                     <a href="{{ profile.get_absolute_url }}">{{profile}}</a>
