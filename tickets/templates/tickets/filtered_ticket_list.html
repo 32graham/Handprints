@@ -38,7 +38,12 @@
 
 <ul class="pager">
     {% if object_list.has_previous %}
-        <li><a href="?{% url_replace request 'page' object_list.previous_page_number %}"><i class="icon-arrow-left "></i><div class="hidden-xs"> Previous</div></a></li>
+        <li>
+            <a href="?{% url_replace request 'page' object_list.previous_page_number %}">
+                <div class="hidden-xs"><i class="icon-arrow-left "></i> Previous</div>
+                <div class="visible-xs"><i class="icon-arrow-left "></i></div>
+            </a>
+        </li>
     {% endif %}
 
     <li class="text-muted" style="margin:10px;">
@@ -46,7 +51,12 @@
     </li>
 
     {% if object_list.has_next %}
-        <li><a href="?{% url_replace request 'page' object_list.next_page_number %}"><div class="hidden-xs">Next </div><i class="icon-arrow-right"></i></a></li>
+        <li>
+            <a href="?{% url_replace request 'page' object_list.next_page_number %}">
+                <div class="hidden-xs">Next <i class="icon-arrow-right"></i></div>
+                <div class="visible-xs"><i class="icon-arrow-right"></i></div>
+            </a>
+        </li>
     {% endif %}
 </ul>
 
