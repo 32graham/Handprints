@@ -14,16 +14,16 @@
             <tr>
                 <th>ID</th>
                 <th>Title</th>
-                <th>Company</th>
-                <th>Tier</th>
+                <th class="hidden-xs">Company</th>
+                <th class="hidden-xs hidden-sm">Tier</th>
                 <th class="text-right">Assignees</th>
             </tr>
             {% for obj in object_list %}
                 <tr {% if ticket.is_blocker %} class="danger" {% endif %}>
                     <td><a href="{% url "ticket" obj.pk %}">{{obj.pk}}</a></td>
                     <td><a href="{% url "ticket" obj.pk %}">{{obj.title}}</a></td>
-                    <td><a href="{% url "company" obj.company.pk %}">{{obj.company}}</a></td>
-                    <td>{{obj.tier}}</td>
+                    <td class="hidden-xs"><a href="{% url "company" obj.company.pk %}">{{obj.company}}</a></td>
+                    <td class="hidden-xs hidden-sm">{{obj.tier}}</td>
                     <td class="text-right">
                         {% for profile in obj.assignees.all %}
                             {% if not forloop.first %},{% endif %}
