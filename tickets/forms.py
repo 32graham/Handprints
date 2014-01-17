@@ -83,7 +83,7 @@ class StaffNewTicketForm(forms.ModelForm):
                 'company',
                 'tier',
                 'status',
-                Field('assignees', css_class='col-sm-12'),
+                Field('assignees', css_class='col-xs-12'),
             ),
             ButtonHolder(
                 Submit('new_ticket', 'Save', css_class='btn-primary')
