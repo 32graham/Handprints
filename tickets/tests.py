@@ -39,6 +39,7 @@ class TicketsViewsTestCase(TestCase):
             comment='comment',
             date_time=datetime.utcnow().replace(tzinfo=utc),
             profile=profile,
+            is_public=True,
         )
         ticket.tier = tier2
         ticket.status = status2

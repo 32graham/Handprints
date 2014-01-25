@@ -1,6 +1,7 @@
 from .models import Profile
 from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
+from django.views.generic.edit import UpdateView
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
@@ -14,6 +15,12 @@ class ProfileDetailView(DetailView):
     @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, *args, **kwargs):
         return super(ProfileDetailView, self).dispatch(*args, **kwargs)
+
+
+class ProfileSettingsView(UpdateView):
+    model = Profile
+    fields = ['theme']
+    template_name = 'profiles/profile_settings.html'
 
 
 def reset_confirm(request, uidb36=None, token=None):

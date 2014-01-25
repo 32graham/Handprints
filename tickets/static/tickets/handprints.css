@@ -1,5 +1,8 @@
 body {
-    padding: 0px 0px 45px 0px;
+    padding-top: 70px;
+    padding-bottom: 45px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #s2id_id_assignees {
@@ -12,6 +15,11 @@ body {
 
 .md-pad {
     padding: 30px;
+}
+
+.md-pad-sides {
+    padding-left:10px;
+    padding-right:10px;
 }
 
 .pre-formatted-text {

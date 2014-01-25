@@ -17,7 +17,7 @@ class StaffCommentForm(forms.ModelForm):
 class StandardCommentForm(StaffCommentForm):
 
     class Meta(StaffCommentForm.Meta):
-        exclude = ('is_public')
+        exclude = ['is_public']
 
 
 class EditTicketForm(forms.ModelForm):

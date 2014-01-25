@@ -31,7 +31,11 @@
   {% load staticfiles %}
   <link rel="shortcut icon" sizes="196x196" href="{% static "tickets/ticket-196.png" %}">
   <title>{% block title %}Handprints{% endblock title %}</title>
-  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  {% if user.pk %}
+    {{ user.profile.theme.html | safe }}
+  {% else %}
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+  {% endif %}
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
   <link href="{% static "tickets/handprints.css" %}" rel="stylesheet">
   <link rel="icon" type="image/png" href="{% static "tickets/favicon.ico" %}">
@@ -41,7 +45,7 @@
 
 <body>
 
-  <nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <nav class="navbar navbar-default navbar-fixed-top md-pad-sides" role="navigation">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
         <span class="sr-only">Toggle navigation</span>
@@ -78,10 +82,9 @@
     </div>
   </nav>
 
-  <div style="padding:0px 30px">
 
-  {% block content %} {% endblock %}
-
+  <div class="md-pad-sides">
+    {% block content %} {% endblock %}
   </div>
 
   {% block js %}

@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.db import models
-from companies.models import Product, Company
 from profiles.models import Profile
+from companies.models import Product, Company
 
 
 class Status(models.Model):
