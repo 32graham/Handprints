@@ -70,9 +70,9 @@
         {% if user.is_staff %}
           <li><a href="/search/"><i class="icon-fixed-width icon-search"></i>Search</a>
           <li><a href="{% url "overall_stats" %}"><i class="icon-fixed-width icon-bar-chart"></i>Stats</a></li>
-          <li><a href="{% url "profile_me" %}"><i class="icon-fixed-width icon-user"></i>{{ user.get_full_name }}</a>
         {% endif %}
         {% if user.pk %}
+          <li><a href="{% url "profile_me" %}"><i class="icon-fixed-width icon-user"></i>{{ user.get_full_name }}</a>
           <li><a href="{% url "new_ticket" %}"><i class="icon-fixed-width icon-plus"></i>New Ticket</a>
           <li><a href="{% url "django.contrib.auth.views.logout" %}"><i class="icon-fixed-width icon-signout"></i>Logout</a>
         {% else %}
