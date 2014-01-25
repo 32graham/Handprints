@@ -59,7 +59,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    <a class="text-info" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
+                    <a href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                     {% if not event.is_public %}(Private){% endif %}
                 </div>
                 <div class="col-sm-6 text-right text-muted">
@@ -93,7 +93,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    <a class="text-warning" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
+                    <a href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -118,7 +118,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    <a class="text-danger" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
+                    <a href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                 </div>
                 <div class="col-sm-6 text-right text-muted">
                     {{event.date_time}}
@@ -143,7 +143,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-sm-6">
-                    <a class="text-success" href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
+                    <a href="{{ event.profile.get_absolute_url }}">{{event.profile}}</a>
                     (Private)
                 </div>
                 <div class="col-sm-6 text-right text-muted">
