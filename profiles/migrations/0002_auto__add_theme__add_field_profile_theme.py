@@ -18,7 +18,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'Profile.theme'
         db.add_column(u'profiles_profile', 'theme',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['profiles.Theme']),
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['profiles.Theme'], null=True),
                       keep_default=False)
 
 
@@ -49,7 +49,7 @@ class Migration(SchemaMigration):
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -57,7 +57,7 @@ class Migration(SchemaMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         u'companies.company': {
@@ -92,7 +92,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Profile'},
             'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['companies.Company']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'theme': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'to': u"orm['profiles.Theme']"}),
+            'theme': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['profiles.Theme']", 'null': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})
         },
         u'profiles.theme': {

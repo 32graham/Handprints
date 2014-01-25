@@ -15,7 +15,7 @@ class Theme(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User)
     company = models.ForeignKey(Company)
-    theme = models.ForeignKey(Theme, default=1)
+    theme = models.ForeignKey(Theme, null=True)
 
     def __unicode__(self):
         return self.user.get_full_name()
