@@ -45,11 +45,11 @@ def me(request):
         })
 
 
-def reset_confirm(request, uidb36=None, token=None):
+def reset_confirm(request, uidb64=None, token=None):
     return password_reset_confirm(
         request,
         template_name='password_reset_confirm.html',
-        uidb36=uidb36,
+        uidb64=uidb64,
         token=token,
         post_reset_redirect=reverse('auth_login')
     )
